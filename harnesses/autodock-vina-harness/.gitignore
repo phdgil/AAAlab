@@ -1,0 +1,17 @@
+# Generated archives
+*.zip
+*.tar.gz
+
+# Runtime outputs from docking runs
+vina_run_*/
+*_workspace/
+_workspace/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.swp
+
+# Python/cache noise from local validation experiments
+__pycache__/
+.pytest_cache/

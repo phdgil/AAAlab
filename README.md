@@ -1,0 +1,63 @@
+# AAAlab
+
+AAAlab is a collection of Codex harnesses for scientific and engineering workflows.
+
+The first harness is:
+
+| Harness | Purpose | Install name |
+|---|---|---|
+| [autodock-vina-harness](harnesses/autodock-vina-harness/README.md) | Multi-agent AutoDock Vina / gnina docking execution, validation, reruns, troubleshooting, and QA | `$autodock-vina-harness` |
+
+## Install All Harnesses
+
+PowerShell:
+
+```powershell
+.\install.ps1
+```
+
+macOS/Linux:
+
+```bash
+./install.sh
+```
+
+Restart Codex after installation so the skill registry reloads.
+
+## Install One Harness
+
+PowerShell:
+
+```powershell
+.\install.ps1 -Harness autodock-vina-harness
+```
+
+macOS/Linux:
+
+```bash
+./install.sh autodock-vina-harness
+```
+
+## Repository Layout
+
+```text
+AAAlab/
+  docs/
+    github-actions/
+      validate.yml
+  harnesses/
+    autodock-vina-harness/
+      skills/
+        autodock-vina/
+        autodock-vina-harness/
+```
+
+Each harness directory is expected to be self-contained enough to install independently, while the repo root provides shared validation and install entry points.
+
+## GitHub Actions
+
+A validation workflow template is included at [docs/github-actions/validate.yml](docs/github-actions/validate.yml). To activate it, copy it to `.github/workflows/validate.yml` after authenticating GitHub CLI with the `workflow` scope.
+
+## License
+
+AAAlab is licensed under Apache-2.0. Individual harnesses may include their own license audits and third-party notices for external tools they reference.

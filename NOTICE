@@ -1,0 +1,9 @@
+AAAlab
+Copyright 2026 AAAlab contributors
+
+This repository contains Codex harness instructions, scripts, and documentation.
+It does not include or redistribute external scientific software, models, datasets,
+or generated results unless a specific harness explicitly says otherwise.
+
+External tools keep their own licenses. Users who install or redistribute those
+tools must comply with their upstream terms.

@@ -1,0 +1,6 @@
+interface:
+  display_name: "AutoDock Vina Harness"
+  short_description: "Coordinate multi-agent Vina and gnina docking runs with validation and QA gates."
+  default_prompt: "Use $autodock-vina-harness for real AutoDock Vina or gnina docking execution, reruns, troubleshooting, validation gates, and QA. Load $autodock-vina as the protocol source."
+policy:
+  allow_implicit_invocation: true

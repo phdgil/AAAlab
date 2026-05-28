@@ -1,0 +1,16 @@
+name: Validate Harnesses
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate all harnesses
+        shell: pwsh
+        run: .\scripts\validate-all.ps1

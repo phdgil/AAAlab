@@ -1,0 +1,10 @@
+AutoDock Vina Skill Pack
+Copyright 2026 AutoDock Vina Skill Pack contributors
+
+This repository provides Codex skill instructions, harness roles, validation scripts,
+and documentation. It does not include or redistribute AutoDock Vina, gnina, Meeko,
+RDKit, Open Babel, MGLTools/AutoDockTools, 3Dmol.js, py3Dmol, Docker images, model
+weights, receptor structures, ligands, or docking results.
+
+External tools keep their own licenses. Users who install or redistribute those
+tools must comply with their upstream terms.

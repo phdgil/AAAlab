@@ -1,0 +1,19 @@
+# Generated archives
+*.zip
+*.tar.gz
+
+# Runtime outputs from harnesses
+vina_run_*/
+*_workspace/
+_workspace/
+
+# Local environments and caches
+.codex/
+.claude/
+__pycache__/
+.pytest_cache/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.swp
