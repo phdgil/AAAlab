@@ -42,8 +42,8 @@ macOS/Linux:
 
 ```text
 AAAlab/
-  docs/
-    github-actions/
+  .github/
+    workflows/
       validate.yml
   harnesses/
     autodock-vina-harness/
@@ -56,7 +56,7 @@ Each harness directory is expected to be self-contained enough to install indepe
 
 ## GitHub Actions
 
-A validation workflow template is included at [docs/github-actions/validate.yml](docs/github-actions/validate.yml). To activate it, copy it to `.github/workflows/validate.yml` after authenticating GitHub CLI with the `workflow` scope.
+The validation workflow at [.github/workflows/validate.yml](.github/workflows/validate.yml) runs all harness validators on push and pull request.
 
 ## License
 
