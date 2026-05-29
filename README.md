@@ -18,7 +18,7 @@ The first harness is:
 
 AAAlab has two install layers:
 
-- `npm install -g github:shkdidrlf/AAAlab` installs the `aaalab` command-line manager.
+- `npm install -g github:phdgil/AAAlab` installs the `aaalab` command-line manager.
 - `aaalab install` installs the bundled harness skills into an agent runtime's skill directory.
 
 The second step is explicit so a global npm install does not silently modify an agent home such as `~/.codex`, `~/.claude`, or another custom runtime directory. By default, `aaalab install` uses `AAALAB_AGENT_HOME`, then `CODEX_HOME`, then `~/.codex`. Use `--agent-home <path>` to install into a different runtime.
@@ -28,14 +28,14 @@ The second step is explicit so a global npm install does not silently modify an 
 Recommended global install:
 
 ```bash
-npm install -g github:shkdidrlf/AAAlab
+npm install -g github:phdgil/AAAlab
 aaalab install
 ```
 
 One-shot install without keeping a global `aaalab` command:
 
 ```bash
-npx --yes github:shkdidrlf/AAAlab install
+npx --yes github:phdgil/AAAlab install
 ```
 
 Custom agent home:
@@ -71,7 +71,7 @@ aaalab install autodock-vina-harness
 One-shot:
 
 ```bash
-npx --yes github:shkdidrlf/AAAlab install autodock-vina-harness
+npx --yes github:phdgil/AAAlab install autodock-vina-harness
 ```
 
 Custom agent home:

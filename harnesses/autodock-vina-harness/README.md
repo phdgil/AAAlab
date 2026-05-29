@@ -18,14 +18,14 @@ AAAlab has two install layers: npm installs the `aaalab` manager, and `aaalab in
 Recommended global install:
 
 ```bash
-npm install -g github:shkdidrlf/AAAlab
+npm install -g github:phdgil/AAAlab
 aaalab install autodock-vina-harness
 ```
 
 One-shot install without keeping a global `aaalab` command:
 
 ```bash
-npx --yes github:shkdidrlf/AAAlab install autodock-vina-harness
+npx --yes github:phdgil/AAAlab install autodock-vina-harness
 ```
 
 Custom agent home:

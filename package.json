@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shkdidrlf/AAAlab.git"
+    "url": "git+https://github.com/phdgil/AAAlab.git"
   },
   "bin": {
     "aaalab": "bin/aaalab.js"
