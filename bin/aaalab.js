@@ -13,14 +13,14 @@ function usage(exitCode = 0) {
 
 Usage:
   aaalab list
-  aaalab install [harness] [--codex-home <path>]
+  aaalab install [harness] [--agent-home <path>]
   aaalab validate [harness]
   aaalab runtime-check [harness]
 
 Examples:
   aaalab install
   aaalab install autodock-vina-harness
-  aaalab install autodock-vina-harness --codex-home "$HOME/.codex"
+  aaalab install autodock-vina-harness --agent-home "$HOME/.codex"
   aaalab validate
   aaalab runtime-check autodock-vina-harness
 `;
@@ -57,10 +57,10 @@ function parseOptions(args) {
   const out = { positional: [] };
   for (let i = 0; i < args.length; i += 1) {
     const arg = args[i];
-    if (arg === "--codex-home") {
+    if (arg === "--agent-home" || arg === "--codex-home") {
       i += 1;
-      if (!args[i]) fail("--codex-home requires a path");
-      out.codexHome = path.resolve(args[i]);
+      if (!args[i]) fail(`${arg} requires a path`);
+      out.agentHome = path.resolve(args[i]);
     } else if (arg === "-h" || arg === "--help") {
       usage(0);
     } else {
@@ -70,8 +70,8 @@ function parseOptions(args) {
   return out;
 }
 
-function defaultCodexHome() {
-  return process.env.CODEX_HOME || path.join(os.homedir(), ".codex");
+function defaultAgentHome() {
+  return process.env.AAALAB_AGENT_HOME || process.env.CODEX_HOME || path.join(os.homedir(), ".codex");
 }
 
 function copyDir(source, target) {
@@ -80,13 +80,13 @@ function copyDir(source, target) {
   fs.cpSync(source, target, { recursive: true });
 }
 
-function installHarness(harnessName, codexHome) {
+function installHarness(harnessName, agentHome) {
   const harnessDir = path.join(harnessesRoot, harnessName);
   const skillsDir = path.join(harnessDir, "skills");
   if (!exists(skillsDir)) {
     fail(`Harness has no skills directory: ${skillsDir}`);
   }
-  const targetSkills = path.join(codexHome, "skills");
+  const targetSkills = path.join(agentHome, "skills");
   fs.mkdirSync(targetSkills, { recursive: true });
 
   const skills = fs.readdirSync(skillsDir, { withFileTypes: true })
@@ -299,12 +299,12 @@ function main() {
     const harnessPattern = opts.positional[0] || "*";
     const harnesses = listHarnesses(harnessPattern);
     if (harnesses.length === 0) fail(`No harness matched: ${harnessPattern}`);
-    const codexHome = opts.codexHome || defaultCodexHome();
+    const agentHome = opts.agentHome || defaultAgentHome();
     for (const harness of harnesses) {
       console.log(`Installing harness: ${harness}`);
-      installHarness(harness, codexHome);
+      installHarness(harness, agentHome);
     }
-    console.log("Restart Codex so the skill registry reloads.");
+    console.log("Restart your agent runtime so its skill or harness registry reloads.");
     return;
   }
 

@@ -1,6 +1,6 @@
 # AutoDock Vina Harness
 
-Codex harness for running protein-ligand docking through AutoDock Vina and optional gnina follow-up.
+Agent harness for running protein-ligand docking through AutoDock Vina and optional gnina follow-up.
 
 This is the first harness in AAAlab. License: Apache-2.0. See the repository root [LICENSE](../../LICENSE), plus this harness's [LICENSE_AUDIT.md](LICENSE_AUDIT.md) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
@@ -26,7 +26,7 @@ PowerShell:
 .\install.ps1
 ```
 
-Custom Codex home:
+Custom agent home:
 
 ```powershell
 .\install.ps1 -CodexHome "D:\path\to\.codex"
@@ -51,7 +51,7 @@ copy skills/autodock-vina         -> <CODEX_HOME>/skills/autodock-vina
 copy skills/autodock-vina-harness -> <CODEX_HOME>/skills/autodock-vina-harness
 ```
 
-Restart Codex after installation so the skill registry reloads.
+Restart your agent runtime after installation so its skill or harness registry reloads.
 
 From the AAAlab repository root, you can also install this harness with:
 
@@ -81,8 +81,8 @@ AutoDock Vina harness structure OK.
 
 ## Runtime Prerequisites
 
-- Codex with skills enabled.
-- Codex multi-agent support enabled for full harness orchestration.
+- An agent runtime with skills or harnesses enabled, such as Claude Code, Antigravity, or Codex CLI.
+- Multi-agent support enabled for full harness orchestration when available.
 - AutoDock Vina available on `PATH` for actual docking.
 - At least one PDBQT prep path: Meeko, MGLTools/AutoDockTools, or Open Babel.
 - RDKit or another conformer path when starting from SMILES or 2D ligands.

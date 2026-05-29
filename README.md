@@ -6,7 +6,7 @@
 
 AAAlab stands for Autonomous AI Agent.
 
-AAAlab is a collection of Codex harnesses for scientific and engineering workflows.
+AAAlab is a collection of agent harnesses for scientific and engineering workflows.
 
 The first harness is:
 
@@ -35,7 +35,7 @@ macOS/Linux:
 ./install.sh
 ```
 
-Restart Codex after installation so the skill registry reloads.
+Restart your agent runtime after installation so its skill or harness registry reloads.
 
 ## Install One Harness
 
