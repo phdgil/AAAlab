@@ -8,6 +8,8 @@ This repository does not vendor third-party docking or chemistry software. It on
 | gnina | Optional follow-up rescoring/redocking engine | Dual Apache-2.0 / GPL-2.0, with GPL required by Open Babel references | No | Do not vendor gnina into this repo without re-auditing GPL implications. |
 | Meeko | Optional receptor/ligand PDBQT preparation path | LGPL-2.1 | No | Invocation or optional installation guidance is acceptable; vendoring requires LGPL compliance. |
 | RDKit | Optional conformer and chemistry handling path | BSD-3-Clause | No | Permissive; keep notices if any code is copied in the future. |
+| Datamol | Optional molecule standardization/conformer helper built on RDKit | Apache-2.0 | No | Optional helper only; keep Apache notice if code is copied. |
+| PDBFixer | Optional receptor structure repair helper | MIT-style | No | Optional helper only; keep MIT notice if code is copied. |
 | Open Babel | Optional format conversion / PDBQT preparation path | GPL-2.0 | No | Do not vendor Open Babel or link against it in repo code without GPL review. |
 | MGLTools / AutoDockTools | Optional legacy PDBQT preparation path | License not conclusively determined from official pages in this audit | No | Keep as optional user-installed tooling only unless license terms are reviewed directly. |
 | 3Dmol.js | Possible HTML pose viewer dependency | BSD-style permissive license | No | If viewer HTML embeds 3Dmol.js code instead of loading from CDN, include its notice. |

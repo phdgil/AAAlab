@@ -1,7 +1,7 @@
 # AAAlab
 
 <p align="center">
-  <img src="assets/aaalab-logo.svg" alt="AAAlab logo" width="220">
+  <img src="assets/aaalab-logo.png" alt="AAAlab logo" width="220">
 </p>
 
 AAAlab stands for Autonomous AI Agent.
@@ -15,6 +15,13 @@ The first harness is:
 | [autodock-vina-harness](harnesses/autodock-vina-harness/README.md) | Multi-agent AutoDock Vina / gnina docking execution, validation, reruns, troubleshooting, and QA | `$autodock-vina-harness` |
 
 ## Install All Harnesses
+
+With npm:
+
+```bash
+npm install -g github:shkdidrlf/AAAlab
+aaalab install
+```
 
 PowerShell:
 
@@ -42,6 +49,26 @@ macOS/Linux:
 
 ```bash
 ./install.sh autodock-vina-harness
+```
+
+npm:
+
+```bash
+aaalab install autodock-vina-harness
+```
+
+## Validate
+
+Cross-platform npm validation:
+
+```bash
+aaalab validate
+```
+
+From a local clone:
+
+```bash
+npm test
 ```
 
 ## Repository Layout

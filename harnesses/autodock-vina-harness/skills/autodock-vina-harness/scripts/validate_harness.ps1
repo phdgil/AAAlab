@@ -23,7 +23,9 @@ $required = @(
     "references\agents\validation-lead.md",
     "references\agents\prep-lead.md",
     "references\agents\docking-runner.md",
-    "references\agents\qa-reviewer.md"
+    "references\agents\qa-reviewer.md",
+    "scripts\verify_dependency_contract.ps1",
+    "scripts\check_runtime_dependencies.ps1"
 )
 
 $missing = @()
@@ -53,5 +55,7 @@ $protocol = Get-Content -Raw -LiteralPath $ProtocolSkill
 if ($protocol -notlike "*autodock-vina-harness*") {
     Write-Warning "Base autodock-vina skill does not mention autodock-vina-harness routing."
 }
+
+& (Join-Path $HarnessRoot "scripts\verify_dependency_contract.ps1") -HarnessRoot $HarnessRoot -ProtocolSkill $ProtocolSkill
 
 Write-Output "AutoDock Vina harness structure OK."

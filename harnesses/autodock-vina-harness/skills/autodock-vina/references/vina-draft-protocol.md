@@ -150,7 +150,7 @@ Keep:
 
 ## 6. Validation Evidence Before Novel Claims
 
-Do not treat docking as a validated insight generator until validation evidence has been checked. A validation gate is not always feasible. In the AHR organoid project in `D:\research\organoid\AHR_docking`, it was feasible because research articles provided literature-known TCDD, BaP, and indirubin species-direction anchors. Vina produced internally consistent numbers, but the original protocol inverted the literature-known TCDD species direction. That made the novel-compound scores unsuitable for biological interpretation until validation was redesigned.
+Do not treat docking as a validated insight generator until validation evidence has been checked. A validation gate is not always feasible. In a previous AHR organoid project, it was feasible because research articles provided literature-known TCDD, BaP, and indirubin species-direction anchors. Vina produced internally consistent numbers, but the original protocol inverted the literature-known TCDD species direction. That made the novel-compound scores unsuitable for biological interpretation until validation was redesigned.
 
 Validation evidence can come from two places:
 
@@ -266,7 +266,7 @@ Recommended command shape:
 
 ```powershell
 docker run --rm `
-  -v C:\path\to\run:/work `
+  -v <host_run_dir>:/work `
   gnina/gnina:latest gnina `
   -r /work/input/receptor_prepared.pdbqt `
   -l /work/input/ligand_prepared.pdbqt `

@@ -13,6 +13,13 @@ Install both skill folders together. The harness expects the protocol skill to b
 
 ## Install
 
+From npm:
+
+```bash
+npm install -g github:shkdidrlf/AAAlab
+aaalab install autodock-vina-harness
+```
+
 PowerShell:
 
 ```powershell
@@ -54,6 +61,14 @@ From the AAAlab repository root, you can also install this harness with:
 
 ## Validate
 
+Cross-platform npm validation:
+
+```bash
+aaalab validate autodock-vina-harness
+```
+
+PowerShell validation:
+
 ```powershell
 & "$env:USERPROFILE\.codex\skills\autodock-vina-harness\scripts\validate_harness.ps1"
 ```
@@ -72,6 +87,14 @@ AutoDock Vina harness structure OK.
 - At least one PDBQT prep path: Meeko, MGLTools/AutoDockTools, or Open Babel.
 - RDKit or another conformer path when starting from SMILES or 2D ligands.
 - Docker or native gnina only when gnina is requested.
+
+The harness intentionally stops before docking if Vina or all PDBQT preparation paths are missing. License cleanup must not remove runtime alternatives; it only keeps those tools external.
+
+Check local runtime availability:
+
+```bash
+aaalab runtime-check autodock-vina-harness
+```
 
 ## Example Prompt
 

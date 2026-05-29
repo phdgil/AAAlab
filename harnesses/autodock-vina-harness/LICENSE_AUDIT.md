@@ -23,6 +23,8 @@ The repository does not include external docking binaries, chemistry libraries, 
 | gnina | Dual Apache-2.0 / GPL-2.0. Upstream explains GPL is needed because of Open Babel usage; Apache-only requires removing Open Babel references from source. | https://github.com/gnina/gnina |
 | Meeko | LGPL-2.1 in current GitHub repository. PyPI metadata for older releases varied, so use the repository LICENSE as controlling for source. | https://github.com/forlilab/Meeko |
 | RDKit | BSD-3-Clause. | https://github.com/rdkit/rdkit |
+| Datamol | Apache-2.0. | https://github.com/datamol-io/datamol |
+| PDBFixer | MIT-style license. | https://github.com/openmm/pdbfixer |
 | Open Babel | GPL-2.0. | https://github.com/openbabel/openbabel |
 | 3Dmol.js | BSD-style permissive license per upstream README. | https://github.com/3dmol/3Dmol.js |
 | py3Dmol | MIT. | https://pypi.org/project/py3Dmol/ |
@@ -36,6 +38,7 @@ The main risk is future scope creep:
 
 - If Open Babel code or GPL gnina source is copied into the repo, an Apache-only repository would no longer be appropriate without a GPL compatibility review.
 - If Meeko code is copied or modified in the repo, LGPL obligations must be followed.
+- If Datamol or PDBFixer code is copied into the repo, retain their upstream notices.
 - If 3Dmol.js or py3Dmol code is embedded into generated templates, their notices should be included.
 - If the repo starts distributing Docker images or binaries, each bundled component must be re-audited.
 
@@ -65,6 +68,6 @@ GPL-2.0 or GPL-3.0 is not recommended for this repository's own license because 
 Before publishing to GitHub:
 
 - Keep `skills/` free of vendored third-party software.
-- Keep installer scripts from downloading or redistributing Vina, gnina, Open Babel, Meeko, RDKit, MGLTools, 3Dmol.js, or py3Dmol automatically.
+- Keep installer scripts from downloading or redistributing Vina, gnina, Open Babel, Meeko, RDKit, Datamol, PDBFixer, MGLTools, 3Dmol.js, or py3Dmol automatically.
 - If adding examples that fetch CDN scripts or install packages, document that those tools remain separately licensed.
 - Re-run `skills/autodock-vina-harness/scripts/validate_harness.ps1`.

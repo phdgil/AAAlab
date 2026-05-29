@@ -1,0 +1,31 @@
+{
+  "name": "aaalab-harnesses",
+  "version": "0.1.0",
+  "description": "AAAlab Codex harness installer and validator.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shkdidrlf/AAAlab.git"
+  },
+  "bin": {
+    "aaalab": "bin/aaalab.js"
+  },
+  "scripts": {
+    "test": "node bin/aaalab.js validate",
+    "validate": "node bin/aaalab.js validate",
+    "runtime-check": "node bin/aaalab.js runtime-check autodock-vina-harness"
+  },
+  "files": [
+    "assets",
+    "bin",
+    "harnesses",
+    "scripts",
+    "CONTRIBUTING.md",
+    "LICENSE",
+    "NOTICE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}
