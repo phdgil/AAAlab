@@ -1,12 +1,13 @@
 param(
-    [string]$CodexHome = (Join-Path $env:USERPROFILE ".codex")
+    [Alias("CodexHome")]
+    [string]$AgentHome = $(if ($env:AAALAB_AGENT_HOME) { $env:AAALAB_AGENT_HOME } elseif ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $env:USERPROFILE ".codex" })
 )
 
 $ErrorActionPreference = "Stop"
 
 $packRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $sourceSkills = Join-Path $packRoot "skills"
-$targetSkills = Join-Path $CodexHome "skills"
+$targetSkills = Join-Path $AgentHome "skills"
 
 foreach ($skill in @("autodock-vina", "autodock-vina-harness")) {
     $source = Join-Path $sourceSkills $skill
@@ -27,7 +28,15 @@ foreach ($skill in @("autodock-vina", "autodock-vina-harness")) {
     Write-Output "Installed $skill -> $target"
 }
 
+$targetHarnessSkill = Join-Path $targetSkills "autodock-vina-harness"
+foreach ($notice in @("LICENSE", "NOTICE", "LICENSE_AUDIT.md", "THIRD_PARTY_NOTICES.md")) {
+    $source = Join-Path $packRoot $notice
+    if (Test-Path -LiteralPath $source) {
+        Copy-Item -Force -LiteralPath $source -Destination $targetHarnessSkill
+    }
+}
+
 $validator = Join-Path $targetSkills "autodock-vina-harness\scripts\validate_harness.ps1"
 & $validator
 
-Write-Output "Restart Codex so the skill registry reloads."
+Write-Output "Restart your agent runtime so its skill registry reloads."

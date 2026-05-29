@@ -2,7 +2,7 @@
 set -euo pipefail
 
 HARNESS="${1:-*}"
-CODEX_HOME="${2:-${CODEX_HOME:-$HOME/.codex}}"
+AGENT_HOME="${2:-${AAALAB_AGENT_HOME:-${CODEX_HOME:-$HOME/.codex}}}"
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HARNESS_ROOT="$REPO_ROOT/harnesses"
 
@@ -20,7 +20,7 @@ for harness_dir in "$HARNESS_ROOT"/*; do
       matched=1
       if [[ -x "$harness_dir/install.sh" || -f "$harness_dir/install.sh" ]]; then
         echo "Installing harness: $harness_name"
-        bash "$harness_dir/install.sh" "$CODEX_HOME"
+        bash "$harness_dir/install.sh" "$AGENT_HOME"
       else
         echo "Skipping $harness_name: no install.sh found." >&2
       fi
@@ -33,4 +33,4 @@ if [[ "$matched" -eq 0 ]]; then
   exit 1
 fi
 
-echo "Restart Codex so the skill registry reloads."
+echo "Restart your agent runtime so its skill registry reloads."

@@ -15,11 +15,18 @@ if ([string]::IsNullOrWhiteSpace($ProtocolSkill)) {
     $skillsRoot = Split-Path -Parent $HarnessRoot
     $ProtocolSkill = Join-Path $skillsRoot "autodock-vina\SKILL.md"
 }
+
+$sourcePackageRoot = Split-Path -Parent (Split-Path -Parent $HarnessRoot)
+$contractRoot = if (Test-Path -LiteralPath (Join-Path $sourcePackageRoot "LICENSE_AUDIT.md")) {
+    $sourcePackageRoot
+} else {
+    $HarnessRoot
+}
 if ([string]::IsNullOrWhiteSpace($LicenseAudit)) {
-    $LicenseAudit = Join-Path (Split-Path -Parent (Split-Path -Parent $HarnessRoot)) "LICENSE_AUDIT.md"
+    $LicenseAudit = Join-Path $contractRoot "LICENSE_AUDIT.md"
 }
 if ([string]::IsNullOrWhiteSpace($ThirdPartyNotices)) {
-    $ThirdPartyNotices = Join-Path (Split-Path -Parent (Split-Path -Parent $HarnessRoot)) "THIRD_PARTY_NOTICES.md"
+    $ThirdPartyNotices = Join-Path $contractRoot "THIRD_PARTY_NOTICES.md"
 }
 
 function Assert-Contains {
@@ -60,7 +67,7 @@ foreach ($tool in @("AutoDock Vina", "gnina", "Meeko", "Open Babel", "RDKit", "D
 
 $forbiddenExtensions = @("*.exe", "*.dll", "*.so", "*.dylib", "*.whl", "*.tar", "*.gz", "*.zip")
 $vendored = foreach ($pattern in $forbiddenExtensions) {
-    Get-ChildItem -LiteralPath (Split-Path -Parent (Split-Path -Parent $HarnessRoot)) -Recurse -File -Filter $pattern -ErrorAction SilentlyContinue
+    Get-ChildItem -LiteralPath $contractRoot -Recurse -File -Filter $pattern -ErrorAction SilentlyContinue
 }
 
 if ($vendored.Count -gt 0) {

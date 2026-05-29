@@ -13,12 +13,28 @@ Install both skill folders together. The harness expects the protocol skill to b
 
 ## Install
 
-From npm:
+AAAlab has two install layers: npm installs the `aaalab` manager, and `aaalab install` copies the harness skills into your agent runtime's skill directory. The second step is explicit so npm does not silently modify `~/.codex`, `~/.claude`, or another custom agent home.
+
+Recommended global install:
 
 ```bash
 npm install -g github:shkdidrlf/AAAlab
 aaalab install autodock-vina-harness
 ```
+
+One-shot install without keeping a global `aaalab` command:
+
+```bash
+npx --yes github:shkdidrlf/AAAlab install autodock-vina-harness
+```
+
+Custom agent home:
+
+```bash
+aaalab install autodock-vina-harness --agent-home "$HOME/.codex"
+```
+
+From this harness directory in a local clone:
 
 PowerShell:
 
@@ -26,10 +42,10 @@ PowerShell:
 .\install.ps1
 ```
 
-Custom agent home:
+Custom agent home from PowerShell:
 
 ```powershell
-.\install.ps1 -CodexHome "D:\path\to\.codex"
+.\install.ps1 -AgentHome "D:\path\to\agent-home"
 ```
 
 macOS/Linux:
@@ -38,7 +54,7 @@ macOS/Linux:
 ./install.sh
 ```
 
-Custom Codex home:
+Custom agent home:
 
 ```bash
 ./install.sh "$HOME/.codex"
@@ -47,17 +63,13 @@ Custom Codex home:
 Manual install:
 
 ```text
-copy skills/autodock-vina         -> <CODEX_HOME>/skills/autodock-vina
-copy skills/autodock-vina-harness -> <CODEX_HOME>/skills/autodock-vina-harness
+copy skills/autodock-vina         -> <AGENT_HOME>/skills/autodock-vina
+copy skills/autodock-vina-harness -> <AGENT_HOME>/skills/autodock-vina-harness
+copy LICENSE_AUDIT.md             -> <AGENT_HOME>/skills/autodock-vina-harness/LICENSE_AUDIT.md
+copy THIRD_PARTY_NOTICES.md       -> <AGENT_HOME>/skills/autodock-vina-harness/THIRD_PARTY_NOTICES.md
 ```
 
 Restart your agent runtime after installation so its skill or harness registry reloads.
-
-From the AAAlab repository root, you can also install this harness with:
-
-```powershell
-.\install.ps1 -Harness autodock-vina-harness
-```
 
 ## Validate
 

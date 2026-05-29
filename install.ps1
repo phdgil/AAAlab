@@ -1,5 +1,6 @@
 param(
-    [string]$CodexHome = (Join-Path $env:USERPROFILE ".codex"),
+    [Alias("CodexHome")]
+    [string]$AgentHome = $(if ($env:AAALAB_AGENT_HOME) { $env:AAALAB_AGENT_HOME } elseif ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $env:USERPROFILE ".codex" }),
     [string]$Harness = "*"
 )
 
@@ -21,7 +22,7 @@ foreach ($harnessDir in $selected) {
     $installer = Join-Path $harnessDir.FullName "install.ps1"
     if (Test-Path -LiteralPath $installer) {
         Write-Output "Installing harness: $($harnessDir.Name)"
-        & $installer -CodexHome $CodexHome
+        & $installer -AgentHome $AgentHome
     } else {
         Write-Warning "Skipping $($harnessDir.Name): no install.ps1 found."
     }

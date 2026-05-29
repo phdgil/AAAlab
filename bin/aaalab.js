@@ -80,6 +80,18 @@ function copyDir(source, target) {
   fs.cpSync(source, target, { recursive: true });
 }
 
+function copyHarnessNotices(harnessDir, harnessName, targetSkills) {
+  const targetHarnessSkill = path.join(targetSkills, harnessName);
+  if (!exists(targetHarnessSkill)) return;
+
+  for (const file of ["LICENSE", "NOTICE", "LICENSE_AUDIT.md", "THIRD_PARTY_NOTICES.md"]) {
+    const source = path.join(harnessDir, file);
+    if (exists(source)) {
+      fs.copyFileSync(source, path.join(targetHarnessSkill, file));
+    }
+  }
+}
+
 function installHarness(harnessName, agentHome) {
   const harnessDir = path.join(harnessesRoot, harnessName);
   const skillsDir = path.join(harnessDir, "skills");
@@ -104,6 +116,8 @@ function installHarness(harnessName, agentHome) {
     copyDir(source, target);
     console.log(`Installed ${skill} -> ${target}`);
   }
+
+  copyHarnessNotices(harnessDir, harnessName, targetSkills);
 }
 
 function assertContains(content, needle, label) {
