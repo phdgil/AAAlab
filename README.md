@@ -1,5 +1,11 @@
 # AAAlab
 
+<p align="center">
+  <img src="assets/aaalab-logo.svg" alt="AAAlab logo" width="220">
+</p>
+
+AAAlab stands for Autonomous AI Agent.
+
 AAAlab is a collection of Codex harnesses for scientific and engineering workflows.
 
 The first harness is:
