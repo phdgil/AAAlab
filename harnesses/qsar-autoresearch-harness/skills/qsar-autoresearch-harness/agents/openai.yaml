@@ -1,0 +1,6 @@
+interface:
+  display_name: "QSAR Autoresearch Harness"
+  short_description: "Coordinate multi-agent QSAR workbook audits, leakage-aware training runs, bounded retry-loop design, and result packaging."
+  default_prompt: "Use $qsar-autoresearch-harness for real QSAR workbook execution, cross-dataset generalization, leakage review, deterministic next-experiment planning, and share-ready result packaging. Load $qsar-autoresearch as the protocol source."
+policy:
+  allow_implicit_invocation: true
