@@ -252,51 +252,78 @@ function pythonModuleAvailable(name) {
 }
 
 function runtimeCheck(harnessName) {
-  if (harnessName !== "autodock-vina-harness") {
-    fail(`No runtime-check implementation for ${harnessName}`);
-  }
-  const checks = [
-    commandAvailable("vina"),
-    commandAvailable("obabel"),
-    commandAvailable("mk_prepare_receptor.py"),
-    commandAvailable("mk_prepare_ligand.py"),
-    commandAvailable("prepare_receptor4.py"),
-    commandAvailable("prepare_ligand4.py"),
-    commandAvailable("gnina"),
-    commandAvailable("docker"),
-    commandAvailable("python"),
-    pythonModuleAvailable("rdkit"),
-    pythonModuleAvailable("meeko"),
-    pythonModuleAvailable("py3Dmol")
-  ];
+  if (harnessName === "autodock-vina-harness") {
+    const checks = [
+      commandAvailable("vina"),
+      commandAvailable("obabel"),
+      commandAvailable("mk_prepare_receptor.py"),
+      commandAvailable("mk_prepare_ligand.py"),
+      commandAvailable("prepare_receptor4.py"),
+      commandAvailable("prepare_ligand4.py"),
+      commandAvailable("gnina"),
+      commandAvailable("docker"),
+      commandAvailable("python"),
+      pythonModuleAvailable("rdkit"),
+      pythonModuleAvailable("meeko"),
+      pythonModuleAvailable("py3Dmol")
+    ];
 
-  for (const check of checks) {
-    const status = check.available ? "available" : "missing";
-    console.log(`${check.name}: ${status}${check.source ? ` (${check.source})` : ""}`);
+    for (const check of checks) {
+      const status = check.available ? "available" : "missing";
+      console.log(`${check.name}: ${status}${check.source ? ` (${check.source})` : ""}`);
+    }
+
+    const hasVina = checks.find((item) => item.name === "vina").available;
+    const hasPrep = checks.some((item) => [
+      "obabel",
+      "mk_prepare_receptor.py",
+      "mk_prepare_ligand.py",
+      "prepare_receptor4.py",
+      "prepare_ligand4.py",
+      "python module: meeko"
+    ].includes(item.name) && item.available);
+    const hasGnina = checks.some((item) => ["gnina", "docker"].includes(item.name) && item.available);
+
+    if (!hasVina || !hasPrep) {
+      console.log("Preflight verdict: real docking must stop and report missing dependencies.");
+    } else {
+      console.log("Preflight verdict: Vina docking runtime appears available.");
+    }
+
+    if (!hasGnina) {
+      console.log("gnina verdict: gnina follow-up must be skipped unless installed.");
+    } else {
+      console.log("gnina verdict: gnina follow-up may proceed after a real CNN smoke test when GPU scoring is intended.");
+    }
+    return;
   }
 
-  const hasVina = checks.find((item) => item.name === "vina").available;
-  const hasPrep = checks.some((item) => [
-    "obabel",
-    "mk_prepare_receptor.py",
-    "mk_prepare_ligand.py",
-    "prepare_receptor4.py",
-    "prepare_ligand4.py",
-    "python module: meeko"
-  ].includes(item.name) && item.available);
-  const hasGnina = checks.some((item) => ["gnina", "docker"].includes(item.name) && item.available);
+  if (harnessName === "qsar-autoresearch-harness") {
+    const checks = [
+      commandAvailable("python"),
+      pythonModuleAvailable("pandas"),
+      pythonModuleAvailable("sklearn"),
+      pythonModuleAvailable("openpyxl"),
+      pythonModuleAvailable("rdkit")
+    ];
 
-  if (!hasVina || !hasPrep) {
-    console.log("Preflight verdict: real docking must stop and report missing dependencies.");
-  } else {
-    console.log("Preflight verdict: Vina docking runtime appears available.");
+    for (const check of checks) {
+      const status = check.available ? "available" : "missing";
+      console.log(`${check.name}: ${status}${check.source ? ` (${check.source})` : ""}`);
+    }
+
+    const hasPython = checks.find((item) => item.name === "python").available;
+    const hasCore = checks.every((item) => item.name === "python" || item.available);
+
+    if (!hasPython || !hasCore) {
+      console.log("Preflight verdict: QSAR harness must stop and report missing Python or modeling dependencies.");
+    } else {
+      console.log("Preflight verdict: QSAR workbook runtime appears available.");
+    }
+    return;
   }
 
-  if (!hasGnina) {
-    console.log("gnina verdict: gnina follow-up must be skipped unless installed.");
-  } else {
-    console.log("gnina verdict: gnina follow-up may proceed after a real CNN smoke test when GPU scoring is intended.");
-  }
+  fail(`No runtime-check implementation for ${harnessName}`);
 }
 
 function main() {

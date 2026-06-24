@@ -8,11 +8,12 @@ AAAlab stands for Autonomous AI Agent.
 
 AAAlab is a collection of agent harnesses for scientific and engineering workflows.
 
-The first harness is:
+Bundled harnesses are:
 
 | Harness | Purpose | Install name |
 |---|---|---|
 | [autodock-vina-harness](harnesses/autodock-vina-harness/README.md) | Multi-agent AutoDock Vina / gnina docking execution, validation, reruns, troubleshooting, and QA | `autodock-vina-harness` |
+| [qsar-autoresearch-harness](harnesses/qsar-autoresearch-harness/README.md) | Multi-agent QSAR workbook auditing, leakage-aware in-vivo preparation, per-table training, bounded next-experiment control, and share-ready result packaging | `qsar-autoresearch-harness` |
 
 ## Installation Model
 
@@ -66,18 +67,21 @@ Recommended:
 
 ```bash
 aaalab install autodock-vina-harness
+aaalab install qsar-autoresearch-harness
 ```
 
 One-shot:
 
 ```bash
 npx --yes github:phdgil/AAAlab install autodock-vina-harness
+npx --yes github:phdgil/AAAlab install qsar-autoresearch-harness
 ```
 
 Custom agent home:
 
 ```bash
 aaalab install autodock-vina-harness --agent-home "$HOME/.codex"
+aaalab install qsar-autoresearch-harness --agent-home "$HOME/.codex"
 ```
 
 From a local clone:
@@ -86,12 +90,14 @@ PowerShell:
 
 ```powershell
 .\install.ps1 -Harness autodock-vina-harness
+.\install.ps1 -Harness qsar-autoresearch-harness
 ```
 
 macOS/Linux:
 
 ```bash
 ./install.sh autodock-vina-harness
+./install.sh qsar-autoresearch-harness
 ```
 
 ## Validate
@@ -120,6 +126,10 @@ AAAlab/
       skills/
         autodock-vina/
         autodock-vina-harness/
+    qsar-autoresearch-harness/
+      skills/
+        qsar-autoresearch/
+        qsar-autoresearch-harness/
 ```
 
 Each harness directory is expected to be self-contained enough to install independently, while the repo root provides shared validation and install entry points.
