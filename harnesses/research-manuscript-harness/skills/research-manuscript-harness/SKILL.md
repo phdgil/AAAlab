@@ -20,6 +20,15 @@ Use producer-reviewer gates with the main agent as orchestrator.
 - Require an independent QA pass after all edits.
 - For small single-issue requests, use the protocol directly rather than spawning the full roster.
 
+## Context Preservation Boundary
+
+Manuscript work and harness maintenance are separate workflows.
+
+- Never build, package, validate, or publish this harness inside an active manuscript run.
+- If the user asks to convert new manuscript rules into a reusable harness, hand the finalized rule document and a compact requirement receipt to an isolated worktree, separate agent session, or bounded subagent.
+- Keep manuscript evidence, numerical decisions, and unresolved author comments in the manuscript context; do not copy the full conversational history into the harness-building context.
+- Return only the harness path, validation results, commit identifier, publication link, and material limitations to the manuscript context.
+
 ## Protocol Source
 
 Before execution, load:
