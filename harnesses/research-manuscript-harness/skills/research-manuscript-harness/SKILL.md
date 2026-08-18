@@ -1,0 +1,167 @@
+---
+name: research-manuscript-harness
+description: "Coordinate a multi-agent research-manuscript harness for evidence mapping, scientific editing, methods reproducibility, abbreviation and citation auditing, figure and table QA, DOCX formatting, and independent final review. Use for real manuscript creation or substantive revision; load research-manuscript as the protocol source."
+metadata:
+  protocol_skill: "research-manuscript"
+  protocol_relative_path: "../research-manuscript/SKILL.md"
+---
+
+# Research Manuscript Harness
+
+This harness coordinates specialist reviewers around the `research-manuscript` protocol. It converts research outcomes into a coherent manuscript or performs a publication-level revision of DOCX and Markdown drafts while preserving scientific claim boundaries.
+
+## Execution Mode
+
+Use producer-reviewer gates with the main agent as orchestrator.
+
+- Use read-only agents for evidence, citation, abbreviation, and QA audits.
+- Use editing agents only after the authoritative manuscript and evidence sources are identified.
+- Keep figure generation separate from manuscript prose editing when practical.
+- Require an independent QA pass after all edits.
+- For small single-issue requests, use the protocol directly rather than spawning the full roster.
+
+## Protocol Source
+
+Before execution, load:
+
+1. sibling skill `$research-manuscript`, normally at `../research-manuscript/SKILL.md`;
+2. `../research-manuscript/references/manuscript-author-review-guidelines.md`;
+3. target-journal author instructions supplied by the user or retrieved from the official journal source;
+4. project-local evidence, figures, tables, Supporting Information, and release metadata.
+
+User instructions and official journal requirements override defaults. Record every override.
+
+## Agent Roster
+
+| Role file | Purpose | Primary output |
+|---|---|---|
+| `references/agents/evidence-structure-editor.md` | Map claims to evidence and revise narrative order | evidence map, section revision plan |
+| `references/agents/methods-reproducibility-auditor.md` | Audit data construction, thresholds, folds, and leakage controls | methods audit |
+| `references/agents/abbreviation-citation-auditor.md` | Audit independent abstract/main abbreviation scopes and citation order | language/reference audit |
+| `references/agents/figure-table-editor.md` | Audit redundancy, panel labels, legends, placement, and aspect ratios | figure/table audit |
+| `references/agents/docx-format-auditor.md` | Audit line spacing, plain black text, headings, author block, tables, and images | format audit |
+| `references/agents/qa-reviewer.md` | Independently verify final scientific and document integrity | QA verdict |
+
+Use fewer agents when scope is narrow, but never let the final producer self-approve a submission-ready result.
+
+## Workspace Layout
+
+Create one run directory unless the user supplies one:
+
+```text
+manuscript_run_<project>_<timestamp>/
+  00_intake/
+  01_evidence/
+  02_section_audits/
+  03_revision/
+  04_figures_tables/
+  05_formatting/
+  06_qa/
+  final/
+  run_index.json
+```
+
+Do not overwrite the only manuscript copy without a recoverable source or version-control state.
+
+## Workflow
+
+### Phase 0: Context and authority
+
+- Identify the authoritative manuscript and Supporting Information.
+- Identify whether the current request is creation, substantive revision, formatting-only, or QA-only.
+- Read embedded comments, tracked decisions, and project guidance.
+- Record target journal and current author metadata.
+- Stop if the manuscript target or evidence source is ambiguous.
+
+### Phase 1: Evidence and structure audit
+
+Run the evidence-structure editor and methods auditor in parallel when the manuscript is non-trivial.
+
+Required checks:
+
+- all numerical claims map to current artifacts;
+- retained, merged, rejected, and failed candidates are explained;
+- Results order follows evidential dependency;
+- Methods disclose data construction, exclusions, thresholds, folds, and leakage controls;
+- Discussion does not restate Results or exceed evidence.
+
+Gate: no prose mutation until stale or contradictory claims are mapped.
+
+### Phase 2: Language and reference audit
+
+Run the abbreviation-citation auditor.
+
+Hard requirements:
+
+- abstract and main body are separate abbreviation scopes;
+- first use in each scope is `full name (abbreviation)`;
+- references follow first-citation order;
+- table abbreviations are already defined or expanded;
+- proper names do not receive invented expansions.
+
+### Phase 3: Manuscript revision
+
+The main editor applies approved changes section by section:
+
+1. title and author block;
+2. abstract;
+3. Introduction;
+4. Materials and Methods;
+5. Results;
+6. Discussion;
+7. Conclusions;
+8. availability and Supporting Information statements;
+9. references.
+
+Remove user comments only after their rule has been applied locally and, when relevant, globally.
+
+### Phase 4: Figure and table gate
+
+Run the figure-table editor.
+
+Hard requirements:
+
+- no redundant table/figure pair without justification;
+- figures are located with their legends;
+- each multi-panel image visibly uses `(A)`, `(B)`, `(C)`, etc.;
+- panel labels have no bounding boxes;
+- every panel is described separately in the legend;
+- source and embedded image aspect ratios match;
+- numbering follows first appearance.
+
+### Phase 5: DOCX formatting gate
+
+Run the DOCX format auditor or equivalent local verification.
+
+Default contract:
+
+- double-line spacing everywhere;
+- plain black text;
+- no bold, italics, underlining, or colored text unless journal-required;
+- author block centered under title;
+- all tables and images retained;
+- DOCX package opens and parses.
+
+### Phase 6: Independent QA
+
+The QA reviewer reads the final manuscript from beginning to end and returns:
+
+- `PASS`, `PASS WITH DISCLOSED LIMITATIONS`, or `BLOCK`;
+- exact blocking passages;
+- numerical or citation mismatches;
+- formatting failures;
+- unresolved submission metadata.
+
+A manuscript may be called review-ready only after all blocking items are fixed and the final file is re-audited.
+
+## Deliverables
+
+- revised manuscript in the requested format;
+- revised Supporting Information when affected;
+- updated figures and legends when affected;
+- audit receipt listing checks actually performed;
+- unresolved-input list for authors, funding, competing interests, or repository metadata.
+
+## Test Scenarios
+
+See `references/trigger-tests.md`. The harness must distinguish substantive manuscript work from simple grammar questions and must fail closed when authoritative evidence or the target file is unknown.

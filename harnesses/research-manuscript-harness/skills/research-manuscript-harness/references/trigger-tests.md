@@ -1,0 +1,28 @@
+# Trigger Tests
+
+## Should use the full harness
+
+1. “Read this complete manuscript, reconcile it with current results, revise every section, repair figures, and deliver a journal-formatted DOCX.”
+2. “Apply all author comments globally, audit citations and abbreviations, and perform independent final QA.”
+3. “Convert these research outputs into a manuscript with figures, tables, Supporting Information, and a submission-ready Word file.”
+
+## Should use only the protocol or answer directly
+
+1. “What is the difference between Results and Discussion?”
+2. “Rewrite this one sentence.”
+3. “How should AUC be introduced as an abbreviation?”
+
+## Must stop or clarify
+
+1. Multiple candidate manuscripts exist and the authoritative file is unknown.
+2. Numerical claims cannot be mapped to current artifacts.
+3. The target journal formatting contract is required but unavailable.
+4. DOCX verification is requested but `python-docx` is missing.
+5. The manuscript is locked and the authoritative file cannot be replaced safely.
+
+## Acceptance scenarios
+
+- Abstract and main body independently define abbreviations.
+- Figure panels use unboxed `(A)`, `(B)`, `(C)` labels and legends describe each panel.
+- A redundant AUC figure is removed when the same values are already in a table.
+- Positive-only external sources are described as concordance or recovery evidence, not full external classification validation.

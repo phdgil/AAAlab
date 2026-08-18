@@ -323,6 +323,28 @@ function runtimeCheck(harnessName) {
     return;
   }
 
+  if (harnessName === "research-manuscript-harness") {
+    const checks = [
+      commandAvailable("python"),
+      pythonModuleAvailable("docx"),
+      pythonModuleAvailable("PIL")
+    ];
+
+    for (const check of checks) {
+      const status = check.available ? "available" : "missing";
+      console.log(`${check.name}: ${status}${check.source ? ` (${check.source})` : ""}`);
+    }
+
+    const hasPython = checks.find((item) => item.name === "python").available;
+    const hasDocumentTools = checks.every((item) => item.name === "python" || item.available);
+    if (!hasPython || !hasDocumentTools) {
+      console.log("Preflight verdict: Markdown review may proceed, but DOCX mutation or verification must stop and report missing python-docx or Pillow.");
+    } else {
+      console.log("Preflight verdict: research manuscript DOCX runtime appears available.");
+    }
+    return;
+  }
+
   fail(`No runtime-check implementation for ${harnessName}`);
 }
 

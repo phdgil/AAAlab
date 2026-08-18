@@ -1,0 +1,6 @@
+interface:
+  display_name: "Research Manuscript Harness"
+  short_description: "Coordinate publication-level manuscript writing, evidence audits, figure and table review, DOCX formatting, and independent QA."
+  default_prompt: "Use $research-manuscript-harness for substantive manuscript creation or revision. Load $research-manuscript as the protocol source, audit evidence before mutation, treat abstract and main-body abbreviations independently, and require final figure, citation, formatting, and QA gates."
+policy:
+  allow_implicit_invocation: true
