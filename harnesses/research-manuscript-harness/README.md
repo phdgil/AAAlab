@@ -84,6 +84,7 @@ Research manuscript harness structure OK.
 - Python for local document audits.
 - `python-docx` for DOCX reading, editing, and structural verification.
 - Pillow for embedded-image dimensions and aspect-ratio checks.
+- `openpyxl` for consolidated Supporting Information workbook and worksheet-parity audits.
 
 Markdown review can proceed without DOCX dependencies. DOCX mutation or verification must stop and report missing dependencies rather than claiming success.
 
@@ -96,13 +97,18 @@ Use $research-manuscript-harness to reconcile this manuscript with current resul
 ## Enforced review rules
 
 - Evidence mapping before prose mutation.
+- An executable revision plan before mutation, followed by execution and final verification in the same run.
+- Local and global application of literal `{...}` comments before comment removal.
 - Publication-level literature explanation.
 - Reproducible methods with explicit thresholds, folds, and leakage controls.
+- Scientific rationale for descriptor sets, filtering intent, cutoffs, fold design, top-N caps, and external-source selection.
 - Separate abbreviation scopes for abstract and main body.
 - First-citation-order references.
 - Results ordered by evidential dependency.
+- Main/SI method-result alignment and consolidated XLSX delivery for exact supporting tables.
 - Unboxed parenthesized multi-panel labels and panel-specific legends.
 - Nonredundant figures and tables.
+- Actual DOCX table-object checks that block missing, concatenated, or malformed tables.
 - Final DOCX formatting and image-geometry checks.
 - Independent QA before “review-ready” or “submission-ready” claims.
 

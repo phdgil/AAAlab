@@ -8,6 +8,7 @@
 - Explain what prior studies did, what they established, and how the present work differs.
 - Remove duplicated reasoning, vague claims, and sentences that do not advance the argument.
 - Use the narrowest claim supported by current evidence.
+- Use `pre-established`, `released`, `unchanged`, or `fixed before evaluation` when applicable; avoid `frozen`. Do not use `membership` where overlapping annotations make it inaccurate.
 
 ## Author block template
 
@@ -52,6 +53,7 @@ For other projects, obtain author order, affiliations, corresponding-author deta
 - State structure acquisition, parsing, standardization, canonicalization, and deduplication rules.
 - Define fingerprint type, radius, bit length, similarity metric, and cutoff.
 - Explain positive sets, comparison sets, exact-overlap exclusions, thresholds, and folds.
+- Give scientific rationale for descriptor selection, near-positive filtering intent, numerical cutoffs, fold construction, candidate caps such as top-N patterns, external-source search breadth, and databases selected for direct assessment.
 - Keep scoring-function construction coherent while identifying genuine component differences.
 - Describe structural-pattern discovery with graph nodes, edges, restart/damping, ranking, fold design, and leakage controls.
 - State when a method was tested for every category; reserve category-specific adoption for Results.
@@ -65,10 +67,15 @@ For other projects, obtain author order, affiliations, corresponding-author deta
 - Present comparison-set construction before benchmark interpretation.
 - Separate primary benchmarking, external comparison, specificity, uncertainty, rebuilding, and augmentation.
 - Report failed candidates and failed promotion experiments.
+- Keep main Methods with analyses reported in main Results. When moving an analysis to Supporting Information, move its method and result together; SI-only analyses require SI methods.
+- Integrate secondary validation, such as a published category comparator, into its category-validation subsection.
+- Balance the abstract around final scoring-function outcomes for all retained categories; do not overemphasize an auxiliary method.
+- Keep a baseline that measures a different construct out of the main text; place it in Supporting Information with a rationale.
 
 ## Tables and figures
 
 - Do not duplicate the same result in both a figure and a table without added value.
+- When a table and figure duplicate information, prefer the figure in Supporting Information and retain exact values in one consolidated supporting XLSX workbook with clearly named sheets.
 - Put figures next to their legends and near first discussion.
 - Combine closely related plots when a multi-panel figure improves the narrative.
 - Label panels `(A)`, `(B)`, `(C)`, etc., without boxes.
@@ -98,6 +105,8 @@ For other projects, obtain author order, affiliations, corresponding-author deta
 
 ## Final checklist
 
+- [ ] An executable, evidence-grounded plan preceded document mutation and was executed through final verification in the same run.
+- [ ] Every literal `{...}` comment was inventoried, mapped to its local passage and any global rule, and removed only after both applications.
 - [ ] Abstract and main body define abbreviations independently.
 - [ ] References follow first-citation order.
 - [ ] Introduction explains rather than lists cited work.
@@ -105,6 +114,7 @@ For other projects, obtain author order, affiliations, corresponding-author deta
 - [ ] Results begin with model-selection evidence.
 - [ ] Retained, merged, and rejected candidates have reasons.
 - [ ] Figures and tables are not redundant.
+- [ ] Final DOCX table structures were audited; missing, concatenated, or malformed tables block completion, and captions were not treated as table evidence.
 - [ ] Multi-panel figures use unboxed parenthesized labels.
 - [ ] Legends describe every panel.
 - [ ] Figures preserve aspect ratios and are placed with legends.
@@ -113,3 +123,5 @@ For other projects, obtain author order, affiliations, corresponding-author deta
 - [ ] Claims remain bounded.
 - [ ] Text is plain black and double-spaced.
 - [ ] Author details, tables, figures, and Supporting Information references are correct.
+- [ ] Numerical claims were cross-checked against authoritative CSV, JSON, or XLSX artifacts.
+- [ ] Independent final audits covered abbreviations, citation order, tables, figures, workbook sheets, formatting, and unresolved comments.

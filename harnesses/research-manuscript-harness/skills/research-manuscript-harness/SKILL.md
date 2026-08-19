@@ -18,6 +18,7 @@ Use producer-reviewer gates with the main agent as orchestrator.
 - Use editing agents only after the authoritative manuscript and evidence sources are identified.
 - Keep figure generation separate from manuscript prose editing when practical.
 - Require an independent QA pass after all edits.
+- Require an explicit executable plan before any document mutation, then execute it through final verification in the same run.
 - For small single-issue requests, use the protocol directly rather than spawning the full roster.
 
 ## Context Preservation Boundary
@@ -79,8 +80,11 @@ Do not overwrite the only manuscript copy without a recoverable source or versio
 - Identify the authoritative manuscript and Supporting Information.
 - Identify whether the current request is creation, substantive revision, formatting-only, or QA-only.
 - Read embedded comments, tracked decisions, and project guidance.
+- Treat every literal `{...}` comment as an instruction inventory. Map each to its local passage and any global rule before any mutation.
 - Record target journal and current author metadata.
 - Stop if the manuscript target or evidence source is ambiguous.
+
+Produce an executable plan that names section changes, main/SI moves, evidence artifacts, comment applications, figure/table/workbook actions, and final audits. Do not mutate documents before this plan is complete.
 
 ### Phase 1: Evidence and structure audit
 
@@ -92,6 +96,8 @@ Required checks:
 - retained, merged, rejected, and failed candidates are explained;
 - Results order follows evidential dependency;
 - Methods disclose data construction, exclusions, thresholds, folds, and leakage controls;
+- methods give scientific rationale for descriptor selection, near-positive filtering intent, numerical cutoffs, fold construction, candidate caps, external-source search breadth, and databases selected for direct assessment;
+- main Methods describe analyses reported in main Results, while SI-only analyses have SI methods;
 - Discussion does not restate Results or exceed evidence.
 
 Gate: no prose mutation until stale or contradictory claims are mapped.
@@ -122,7 +128,7 @@ The main editor applies approved changes section by section:
 8. availability and Supporting Information statements;
 9. references.
 
-Remove user comments only after their rule has been applied locally and, when relevant, globally.
+Remove brace comments only after their instruction has been applied locally and, when relevant, globally. Balance the abstract around final scoring-function outcomes for all retained categories; keep auxiliary methods proportionate. Move baselines measuring a different construct to SI with rationale, and integrate secondary validation into the relevant category-validation subsection.
 
 ### Phase 4: Figure and table gate
 
@@ -131,6 +137,7 @@ Run the figure-table editor.
 Hard requirements:
 
 - no redundant table/figure pair without justification;
+- when a table and figure duplicate information, the SI retains the figure and one consolidated supporting XLSX workbook retains exact data on clearly named sheets;
 - figures are located with their legends;
 - each multi-panel image visibly uses `(A)`, `(B)`, `(C)`, etc.;
 - panel labels have no bounding boxes;
@@ -149,7 +156,8 @@ Default contract:
 - no bold, italics, underlining, or colored text unless journal-required;
 - author block centered under title;
 - all tables and images retained;
-- DOCX package opens and parses.
+- DOCX package opens and parses;
+- actual final DOCX table structures are present and distinct; missing, concatenated, or malformed tables block completion, and captions are not table evidence.
 
 ### Phase 6: Independent QA
 
@@ -158,7 +166,9 @@ The QA reviewer reads the final manuscript from beginning to end and returns:
 - `PASS`, `PASS WITH DISCLOSED LIMITATIONS`, or `BLOCK`;
 - exact blocking passages;
 - numerical or citation mismatches;
+- numerical cross-checks against authoritative CSV, JSON, or XLSX artifacts;
 - formatting failures;
+- independent audits of abstract/main-body abbreviations, citation order, tables, figures, workbook sheets, formatting, and unresolved comments;
 - unresolved submission metadata.
 
 A manuscript may be called review-ready only after all blocking items are fixed and the final file is re-audited.

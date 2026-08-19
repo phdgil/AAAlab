@@ -22,6 +22,7 @@ Restart the agent runtime after installation.
 - Read/write access to the manuscript workspace.
 - Python with `python-docx` for DOCX mutation or structural audits.
 - Pillow for embedded-image dimension and aspect-ratio audits.
+- `openpyxl` for consolidated Supporting Information workbook audits.
 
 The protocol can still review Markdown without `python-docx` or Pillow, but DOCX verification must stop and disclose missing dependencies.
 

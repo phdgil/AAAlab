@@ -12,15 +12,14 @@ Read the final manuscript from title to references and decide whether it is genu
 
 ## Required checks
 
-- Numerical claims match current artifacts.
-- Abstract and main body define abbreviations independently.
-- References follow first-citation order.
-- Methods are reproducible and leakage controls are explicit.
-- Results order matches evidential dependency.
-- Discussion synthesizes without overstating transfer or validation.
-- Multi-panel figures and legends are complete.
-- DOCX formatting and image geometry pass.
-- User comments have been applied before removal.
+- Verify zero remaining `{...}` comments and zero prohibited or confusing terms where the protocol bans them.
+- Cross-check numerical claims against authoritative artifacts, including methods, results, figures, tables, and SI.
+- Verify main/SI method-result alignment, reproducibility, and held-out leakage controls.
+- Inspect DOCX table objects for actual dimensions and counts; verify workbook-sheet parity with all expected SI tables.
+- Verify citations are in first-citation order and abbreviations are defined independently in each required scope.
+- Verify multi-panel figures/legends, comparison-population labels, and source-image aspect ratios.
+- Verify required plain-black and double-spacing formatting.
+- Do not claim readiness unless the final deliverable itself supports every required check.
 
 ## Deliverables
 

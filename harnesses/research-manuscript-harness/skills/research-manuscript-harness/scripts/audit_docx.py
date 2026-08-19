@@ -10,7 +10,6 @@ from pathlib import Path
 try:
     from docx import Document
     from docx.enum.text import WD_LINE_SPACING
-    from docx.oxml.ns import qn
 except ImportError as exc:
     raise SystemExit("python-docx is required for DOCX auditing") from exc
 
@@ -28,11 +27,81 @@ def all_paragraphs(document: Document):
                 yield from cell.paragraphs
 
 
+def inherited_style_value(style, accessor):
+    current = style
+    while current is not None:
+        value = accessor(current)
+        if value is not None:
+            return value
+        current = current.base_style
+    return None
+
+
+def effective_line_spacing_rule(paragraph):
+    direct = paragraph.paragraph_format.line_spacing_rule
+    if direct is not None:
+        return direct
+    return inherited_style_value(
+        paragraph.style,
+        lambda style: style.paragraph_format.line_spacing_rule,
+    )
+
+
+def effective_run_font_value(run, paragraph, attribute):
+    direct = getattr(run.font, attribute)
+    if direct is not None:
+        return direct
+    character_value = inherited_style_value(
+        run.style,
+        lambda style: getattr(style.font, attribute),
+    )
+    if character_value is not None:
+        return character_value
+    return inherited_style_value(
+        paragraph.style,
+        lambda style: getattr(style.font, attribute),
+    )
+
+
+def font_color_marker(font):
+    if font.color.rgb is not None:
+        return str(font.color.rgb).upper()
+    if font.color.type is not None:
+        return f"TYPE:{font.color.type}"
+    return None
+
+
+def effective_run_color(run, paragraph):
+    direct = font_color_marker(run.font)
+    if direct is not None:
+        return direct
+    character_value = inherited_style_value(
+        run.style,
+        lambda style: font_color_marker(style.font),
+    )
+    if character_value is not None:
+        return character_value
+    return inherited_style_value(
+        paragraph.style,
+        lambda style: font_color_marker(style.font),
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Audit manuscript DOCX structure and author formatting rules.")
     parser.add_argument("docx", type=Path)
     parser.add_argument("--expect-double-spacing", action="store_true")
     parser.add_argument("--expect-plain-black", action="store_true")
+    parser.add_argument("--expect-table-count", type=int)
+    parser.add_argument(
+        "--expect-table-shape",
+        action="append",
+        default=[],
+        metavar="ROWSxCOLS",
+        help="Expected table shape in document order; repeat for each table.",
+    )
+    parser.add_argument("--supporting-xlsx", type=Path)
+    parser.add_argument("--expect-sheet", action="append", default=[])
     parser.add_argument("--json-out", type=Path)
     args = parser.parse_args()
 
@@ -45,28 +114,93 @@ def main() -> None:
         findings.append({"severity": "blocker", "check": "unresolved_brace_comment"})
 
     if args.expect_double_spacing:
-        failures = [index for index, paragraph in enumerate(paragraphs) if paragraph.paragraph_format.line_spacing_rule != WD_LINE_SPACING.DOUBLE]
+        failures = [
+            index
+            for index, paragraph in enumerate(paragraphs)
+            if effective_line_spacing_rule(paragraph) != WD_LINE_SPACING.DOUBLE
+        ]
         if failures:
             findings.append({"severity": "blocker", "check": "double_spacing", "paragraph_indices": failures[:50], "failure_count": len(failures)})
 
     if args.expect_plain_black:
         run_failures = []
-        for index, run in enumerate(document.element.body.iter(qn("w:r"))):
-            properties = run.find(qn("w:rPr"))
-            color = properties.find(qn("w:color")) if properties is not None else None
-            bold = properties.find(qn("w:b")) if properties is not None else None
-            italic = properties.find(qn("w:i")) if properties is not None else None
-            underline = properties.find(qn("w:u")) if properties is not None else None
-            if color is None or color.get(qn("w:val")) != "000000":
-                run_failures.append(index); continue
-            if bold is None or bold.get(qn("w:val")) not in {"0", "false", "off"}:
-                run_failures.append(index); continue
-            if italic is None or italic.get(qn("w:val")) not in {"0", "false", "off"}:
-                run_failures.append(index); continue
-            if underline is None or underline.get(qn("w:val")) != "none":
-                run_failures.append(index)
+        run_index = 0
+        for paragraph in paragraphs:
+            for run in paragraph.runs:
+                if not run.text:
+                    continue
+                bold = effective_run_font_value(run, paragraph, "bold")
+                italic = effective_run_font_value(run, paragraph, "italic")
+                underline = effective_run_font_value(run, paragraph, "underline")
+                color_value = effective_run_color(run, paragraph)
+                if bold is True or italic is True or underline not in {None, False}:
+                    run_failures.append(run_index)
+                elif color_value is not None and color_value != "000000":
+                    run_failures.append(run_index)
+                run_index += 1
         if run_failures:
             findings.append({"severity": "blocker", "check": "plain_black_text", "run_indices": run_failures[:50], "failure_count": len(run_failures)})
+
+    table_shapes = [(len(table.rows), len(table.columns)) for table in document.tables]
+    if args.expect_table_count is not None and len(document.tables) != args.expect_table_count:
+        findings.append(
+            {
+                "severity": "blocker",
+                "check": "table_count",
+                "expected": args.expect_table_count,
+                "actual": len(document.tables),
+            }
+        )
+    if args.expect_table_shape:
+        expected_shapes = []
+        for value in args.expect_table_shape:
+            match = re.fullmatch(r"(\d+)[xX](\d+)", value)
+            if not match:
+                raise SystemExit(f"Invalid --expect-table-shape value: {value!r}; expected ROWSxCOLS")
+            expected_shapes.append((int(match.group(1)), int(match.group(2))))
+        if expected_shapes != table_shapes:
+            findings.append(
+                {
+                    "severity": "blocker",
+                    "check": "table_shapes",
+                    "expected": expected_shapes,
+                    "actual": table_shapes,
+                }
+            )
+    for table_index, table in enumerate(document.tables, start=1):
+        repeated_header_rows = []
+        for row_index, row in enumerate(table.rows[1:], start=2):
+            first_cell = row.cells[0].text.strip().casefold()
+            if first_cell in {"category", "category a", "fragment"}:
+                repeated_header_rows.append(row_index)
+        if repeated_header_rows:
+            findings.append(
+                {
+                    "severity": "blocker",
+                    "check": "possible_concatenated_table",
+                    "table_index": table_index,
+                    "repeated_header_rows": repeated_header_rows,
+                }
+            )
+
+    workbook_sheets = []
+    if args.supporting_xlsx:
+        try:
+            from openpyxl import load_workbook
+        except ImportError as exc:
+            raise SystemExit("openpyxl is required for supporting-workbook auditing") from exc
+        workbook = load_workbook(args.supporting_xlsx, read_only=True, data_only=True)
+        workbook_sheets = workbook.sheetnames
+        missing_sheets = [sheet for sheet in args.expect_sheet if sheet not in workbook_sheets]
+        if missing_sheets:
+            findings.append(
+                {
+                    "severity": "blocker",
+                    "check": "supporting_workbook_sheets",
+                    "missing": missing_sheets,
+                    "actual": workbook_sheets,
+                }
+            )
 
     image_rows = []
     for index, shape in enumerate(document.inline_shapes, start=1):
@@ -89,8 +223,10 @@ def main() -> None:
         "document": str(args.docx),
         "paragraph_count": len(paragraphs),
         "table_count": len(document.tables),
+        "table_shapes": table_shapes,
         "image_count": len(document.inline_shapes),
         "figure_caption_count": len(captions),
+        "supporting_workbook_sheets": workbook_sheets,
         "images": image_rows,
         "findings": findings,
         "verdict": "PASS" if not any(item["severity"] == "blocker" for item in findings) else "BLOCK",

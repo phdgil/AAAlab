@@ -5,6 +5,7 @@
 1. “Read this complete manuscript, reconcile it with current results, revise every section, repair figures, and deliver a journal-formatted DOCX.”
 2. “Apply all author comments globally, audit citations and abbreviations, and perform independent final QA.”
 3. “Convert these research outputs into a manuscript with figures, tables, Supporting Information, and a submission-ready Word file.”
+4. “Plan the revisions, apply every `{...}` comment locally and globally, move SI-only analyses with their methods, repair missing tables, and consolidate all supporting tables into one workbook.”
 
 ## Should use only the protocol or answer directly
 
@@ -25,4 +26,7 @@
 - Abstract and main body independently define abbreviations.
 - Figure panels use unboxed `(A)`, `(B)`, `(C)` labels and legends describe each panel.
 - A redundant AUC figure is removed when the same values are already in a table.
+- A baseline that measures a different construct is moved to Supporting Information with a stated rationale.
+- Missing or concatenated DOCX table objects block completion even when table captions are present.
+- Redundant SI tables are removed from the DOCX, their figures remain, and exact values are preserved in one XLSX workbook with complete, clearly named sheets.
 - Positive-only external sources are described as concordance or recovery evidence, not full external classification validation.

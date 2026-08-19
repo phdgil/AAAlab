@@ -13,6 +13,7 @@ The harness may use external tools already installed in the user environment:
 - Python
 - python-docx
 - Pillow
+- openpyxl
 - an agent runtime with skill and optional multi-agent support
 
 These dependencies retain their own licenses. The harness invokes them but does not redistribute them.

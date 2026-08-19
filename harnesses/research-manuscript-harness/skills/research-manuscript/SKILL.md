@@ -23,15 +23,19 @@ Load `references/manuscript-author-review-guidelines.md` before editing. Those r
 8. Require unboxed parenthesized panel labels and panel-specific legends.
 9. Keep Discussion synthetic and Conclusions bounded.
 10. Verify the final file, not only the source text used to generate it.
+11. State the scientific rationale for every consequential design choice.
+12. Use `pre-established`, `released`, `unchanged`, or `fixed before evaluation`, not `frozen`; do not use `membership` where annotations can overlap.
 
 ## Workflow
 
-### 1. Intake and evidence map
+### 1. Intake, comment inventory, and executable plan
 
 - Identify the authoritative manuscript file and Supporting Information.
 - Identify current result tables, figures, model definitions, scripts, and release metadata.
 - Record target-journal formatting requirements.
-- Preserve user-authored comments and tracked decisions until each is applied.
+- Inventory every literal `{...}` manuscript comment. Map it to its local passage and any globally applicable rule.
+- Write an executable, evidence-grounded section-by-section plan before mutating either document. Include affected main/SI locations, source artifacts, comment applications, figure/table/workbook actions, and verification steps.
+- Execute that plan and complete final verification in the same run; preserve comments until their local and global applications are complete.
 
 ### 2. Scientific structure audit
 
@@ -54,14 +58,19 @@ Map each claim to current evidence. Flag stale values, duplicated reasoning, mis
 
 - Expand literature context enough to explain the cited work.
 - Define exact data construction, overlap removal, similarity rules, thresholds, folds, and leakage controls.
+- Give scientific rationale for descriptor selection, near-positive filtering intent, numerical cutoffs, fold construction, candidate caps, external-source search breadth, and databases selected for direct assessment.
 - Split unrelated analyses into subsections.
 - Put model-selection evidence before performance claims.
 - Report negative and failed experiments when they determine the final panel.
+- Keep main Methods aligned with analyses reported in main Results. Move an analysis between main text and Supporting Information with its method and result together; document SI-only analyses in SI methods.
+- Integrate secondary category validation into the relevant category-validation subsection rather than adding a standalone subsection.
+- Balance the abstract around final scoring-function outcomes for every retained category; do not let an auxiliary method dominate. Move comparisons against baselines that measure a different construct to SI and explain the mismatch.
 - Rewrite Discussion to interpret rather than repeat Results.
 
 ### 4. Figure and table pass
 
 - Remove redundant figure/table pairs.
+- When a table and figure duplicate information, retain the figure in Supporting Information and keep exact data in one consolidated supporting XLSX workbook with clearly named sheets.
 - Place figures with legends near first discussion.
 - Label every panel `(A)`, `(B)`, `(C)`, etc., without bounding boxes.
 - Describe each panel separately in the legend.
@@ -90,13 +99,16 @@ Apply the journal contract. The default author contract in the reference require
 
 Before completion, verify:
 
-- all user comments are removed only after application,
+- all literal brace comments were applied locally and globally before removal,
+- numerical claims against authoritative CSV, JSON, or XLSX artifacts,
+- actual final DOCX table structures: missing, concatenated, or malformed tables block completion; captions do not prove table existence,
 - all tables and images remain present,
 - image aspect ratios match embedded source images,
 - figure/table numbering is sequential,
 - multi-panel captions cover every panel,
 - abstract and main-body abbreviation audits pass independently,
 - references appear in first-citation order,
+- independent audits cover abstract/main-body abbreviations, citation order, tables, figures, workbook sheets, formatting, and unresolved comments,
 - document formatting matches the journal contract,
 - the final DOCX opens and parses successfully.
 

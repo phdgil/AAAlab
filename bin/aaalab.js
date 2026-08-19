@@ -327,7 +327,8 @@ function runtimeCheck(harnessName) {
     const checks = [
       commandAvailable("python"),
       pythonModuleAvailable("docx"),
-      pythonModuleAvailable("PIL")
+      pythonModuleAvailable("PIL"),
+      pythonModuleAvailable("openpyxl")
     ];
 
     for (const check of checks) {
@@ -338,7 +339,7 @@ function runtimeCheck(harnessName) {
     const hasPython = checks.find((item) => item.name === "python").available;
     const hasDocumentTools = checks.every((item) => item.name === "python" || item.available);
     if (!hasPython || !hasDocumentTools) {
-      console.log("Preflight verdict: Markdown review may proceed, but DOCX mutation or verification must stop and report missing python-docx or Pillow.");
+      console.log("Preflight verdict: Markdown review may proceed, but DOCX or supporting-workbook mutation and verification must stop and report missing python-docx, Pillow, or openpyxl.");
     } else {
       console.log("Preflight verdict: research manuscript DOCX runtime appears available.");
     }
