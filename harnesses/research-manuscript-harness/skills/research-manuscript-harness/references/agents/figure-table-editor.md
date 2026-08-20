@@ -9,7 +9,8 @@ Ensure figures and tables add distinct information, are located correctly, and a
 - Redundancy decisions.
 - Figure/table numbering and placement audit.
 - Panel-label and legend corrections.
-- Embedded-image aspect-ratio audit.
+- Final-size visual figure-readability audit and receipt.
+- Embedded-image aspect-ratio and, where possible, byte/hash identity audit.
 - DOCX XML/table-object and consolidated-XLSX workbook audit.
 
 ## Rules
@@ -24,3 +25,10 @@ Ensure figures and tables add distinct information, are located correctly, and a
 - Define denominators, thresholds, colors, symbols, outlines, and schematic scaling.
 - Keep each figure next to its legend and near first discussion.
 - Preserve source-image aspect ratios in DOCX.
+- Treat visual inspection as a release gate: open every generated figure after generation and again after DOCX embedding. Inspect both at final manuscript display width or an equivalent downscaled preview; successful scripts, valid PNG dimensions, DOCX integrity, and image identity do not establish readability.
+- Block any clipped or truncated title, bar annotation, data label, axis label, tick, legend, colorbar, or panel label. Correct layout/headroom in the source and regenerate; do not manually crop a figure to hide the failure.
+- Require primary data labels, including heatmap in-cell values, to be human-readable at final display size with adequate contrast and bold weight when necessary. Use dark text on light cells and light text on dark cells; reject thin white text that disappears on dark colors.
+- Confirm each panel contains exactly the intended categories and data. Reconcile omissions and inclusions against the analysis, and explain non-obvious choices in the legend.
+- After a panel is inserted, removed, or reordered, reconcile panel labels, legends, figure numbering, manuscript references, and panel descriptions.
+- Check source-to-embedded aspect ratio and byte/hash identity where possible, then inspect the embedded rendering; identity never substitutes for visual QA.
+- In the audit receipt, state the final display width/scale inspected and findings for clipping, minimum readable text, contrast, panel completeness, aspect ratio, and embedded-image checks.

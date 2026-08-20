@@ -84,6 +84,13 @@ For other projects, obtain author order, affiliations, corresponding-author deta
 - Explain denominators, thresholds, symbols, outlines, colors, and schematic elements.
 - Preserve embedded-image aspect ratios.
 - Number figures and tables in order of first appearance.
+- Treat figure QA as a visual gate, not a file or integrity gate. Open every generated figure after generation and again after DOCX embedding; inspect at final manuscript display width or an equivalent downscaled preview. A label readable only in a large source PNG blocks release.
+- Require visible margin and headroom for all titles, annotations above bars, data labels, axis labels, tick labels, legends, colorbars, and panel labels. Clipped or truncated text requires layout/headroom correction and figure regeneration; do not manually crop to repair it.
+- Make heatmap in-cell values and other primary data labels human-readable at final display size, with adequate contrast and bold weight when needed. Use dark text on light cells and light text on dark cells; do not accept thin white text that disappears on dark colors.
+- Confirm that each panel contains exactly the intended categories and data. Any omitted or included category must match the analysis and be explained in the legend when it is not obvious.
+- After inserting, removing, or reordering panels, reconcile panel labels, legends, figure numbering, manuscript references, and panel descriptions.
+- Verify source-image aspect ratio and, where possible, byte/hash identity after embedding, then inspect the embedded rendering. Identity, valid PNG dimensions, DOCX package integrity, and successful generation scripts do not establish readability.
+- Include the final display width/scale inspected and findings for clipping, minimum readable text, contrast, panel completeness, and embedded-image checks in the figure QA receipt.
 
 ## Discussion and Conclusions
 
@@ -118,6 +125,10 @@ For other projects, obtain author order, affiliations, corresponding-author deta
 - [ ] Multi-panel figures use unboxed parenthesized labels.
 - [ ] Legends describe every panel.
 - [ ] Figures preserve aspect ratios and are placed with legends.
+- [ ] Every generated figure and its embedded DOCX rendering were visually inspected at final manuscript display width or equivalent scale.
+- [ ] No titles, annotations, data labels, axes, ticks, legends, colorbars, or panel labels are clipped, truncated, undersized, or low contrast; heatmap and other primary labels remain readable.
+- [ ] Every panel contains the intended data and categories, with non-obvious inclusions or omissions explained in the legend; panel labels, legends, numbering, manuscript references, and descriptions agree.
+- [ ] The figure QA receipt records final display width/scale, clipping, minimum readable text, contrast, panel completeness, and embedded-image checks.
 - [ ] External positive-only evidence is not called full external validation.
 - [ ] Discussion synthesizes rather than repeats.
 - [ ] Claims remain bounded.

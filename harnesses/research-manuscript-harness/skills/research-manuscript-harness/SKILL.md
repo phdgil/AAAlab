@@ -48,7 +48,7 @@ User instructions and official journal requirements override defaults. Record ev
 | `references/agents/evidence-structure-editor.md` | Map claims to evidence and revise narrative order | evidence map, section revision plan |
 | `references/agents/methods-reproducibility-auditor.md` | Audit data construction, thresholds, folds, and leakage controls | methods audit |
 | `references/agents/abbreviation-citation-auditor.md` | Audit independent abstract/main abbreviation scopes and citation order | language/reference audit |
-| `references/agents/figure-table-editor.md` | Audit redundancy, panel labels, legends, placement, and aspect ratios | figure/table audit |
+| `references/agents/figure-table-editor.md` | Audit redundancy, panel labels, legends, placement, aspect ratios, and final-size visual readability | figure/table audit |
 | `references/agents/docx-format-auditor.md` | Audit line spacing, plain black text, headings, author block, tables, and images | format audit |
 | `references/agents/qa-reviewer.md` | Independently verify final scientific and document integrity | QA verdict |
 
@@ -144,6 +144,10 @@ Hard requirements:
 - every panel is described separately in the legend;
 - source and embedded image aspect ratios match;
 - numbering follows first appearance.
+- every generated figure and embedded rendering are opened and visually inspected at final manuscript display width or an equivalent downscaled preview; file, dimension, package, or hash checks alone do not pass this gate;
+- clipped, truncated, undersized, low-contrast, or panel-incomplete figures block release and must be regenerated with corrected layout/headroom;
+- panel labels, legends, numbering, manuscript references, and panel descriptions agree after panel insertion, removal, or reordering;
+- the figure QA receipt states display width/scale and findings for clipping, minimum readable text, contrast, panel completeness, and embedded-image checks.
 
 ### Phase 5: DOCX formatting gate
 
@@ -169,6 +173,7 @@ The QA reviewer reads the final manuscript from beginning to end and returns:
 - numerical cross-checks against authoritative CSV, JSON, or XLSX artifacts;
 - formatting failures;
 - independent audits of abstract/main-body abbreviations, citation order, tables, figures, workbook sheets, formatting, and unresolved comments;
+- final-size visual figure checks, including clipping, readable minimum text, contrast, panel completeness, and embedded-image rendering;
 - unresolved submission metadata.
 
 A manuscript may be called review-ready only after all blocking items are fixed and the final file is re-audited.

@@ -29,4 +29,7 @@
 - A baseline that measures a different construct is moved to Supporting Information with a stated rationale.
 - Missing or concatenated DOCX table objects block completion even when table captions are present.
 - Redundant SI tables are removed from the DOCX, their figures remain, and exact values are preserved in one XLSX workbook with complete, clearly named sheets.
+- A large source PNG passes dimension and aspect-ratio checks but is blocked because bar annotations are clipped or heatmap values become unreadable at final manuscript width.
+- A heatmap is regenerated with larger, high-contrast, bold in-cell values, and the embedded DOCX rendering is inspected again at the recorded display width.
+- Figure panels include only the intended categories; any non-obvious omission is reconciled with the analysis and explained in the legend.
 - Positive-only external sources are described as concordance or recovery evidence, not full external classification validation.

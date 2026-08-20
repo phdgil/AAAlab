@@ -76,6 +76,9 @@ Map each claim to current evidence. Flag stale values, duplicated reasoning, mis
 - Describe each panel separately in the legend.
 - Verify denominators, thresholds, colors, outlines, and schematic caveats.
 - Preserve source-image aspect ratios in DOCX.
+- Treat figure QA as a visual gate: open every generated figure and inspect it again after DOCX embedding at final manuscript display width or an equivalent downscaled preview. Script success, valid PNG dimensions, package integrity, and image identity alone are insufficient.
+- Block clipped, truncated, undersized, low-contrast, or panel-incomplete figures. Regenerate with corrected layout/headroom rather than crop manually; verify labels, legends, numbering, manuscript references, and panel descriptions after every panel insertion, removal, or reorder.
+- Record the inspected display width/scale and results for clipping, minimum readable text, contrast, panel completeness, and embedded-image checks in the QA receipt.
 
 ### 5. Language and reference pass
 
@@ -104,6 +107,8 @@ Before completion, verify:
 - actual final DOCX table structures: missing, concatenated, or malformed tables block completion; captions do not prove table existence,
 - all tables and images remain present,
 - image aspect ratios match embedded source images,
+- source-image byte/hash identity is checked where possible, and embedded renderings are visually inspected at final display width or equivalent scale,
+- no figure has clipped text, unreadable primary labels, insufficient contrast, or missing/unexplained categories or panels,
 - figure/table numbering is sequential,
 - multi-panel captions cover every panel,
 - abstract and main-body abbreviation audits pass independently,

@@ -107,6 +107,8 @@ Use $research-manuscript-harness to reconcile this manuscript with current resul
 - Results ordered by evidential dependency.
 - Main/SI method-result alignment and consolidated XLSX delivery for exact supporting tables.
 - Unboxed parenthesized multi-panel labels and panel-specific legends.
+- Mandatory visual inspection of source and embedded figures at final manuscript display size.
+- Blocking checks for clipped annotations, unreadable fonts, weak contrast, and unintended panel data.
 - Nonredundant figures and tables.
 - Actual DOCX table-object checks that block missing, concatenated, or malformed tables.
 - Final DOCX formatting and image-geometry checks.
