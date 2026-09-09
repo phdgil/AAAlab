@@ -15,6 +15,7 @@ Bundled harnesses are:
 | [autodock-vina-harness](harnesses/autodock-vina-harness/README.md) | Multi-agent AutoDock Vina / gnina docking execution, validation, reruns, troubleshooting, and QA | `autodock-vina-harness` |
 | [qsar-autoresearch-harness](harnesses/qsar-autoresearch-harness/README.md) | Multi-agent QSAR workbook auditing, leakage-aware in-vivo preparation, per-table training, bounded next-experiment control, and share-ready result packaging | `qsar-autoresearch-harness` |
 | [research-manuscript-harness](harnesses/research-manuscript-harness/README.md) | Multi-agent research-manuscript creation and revision with evidence, methods, abbreviation, citation, figure, DOCX-format, and independent QA gates | `research-manuscript-harness` |
+| [classroom-slide-design-harness](harnesses/classroom-slide-design-harness/README.md) | Short visual lectures for project-based classes, with message-specific color, simple English, editable PPTX, rendering, and independent review | `classroom-slide-design-harness` |
 
 ## Installation Model
 
@@ -70,6 +71,7 @@ Recommended:
 aaalab install autodock-vina-harness
 aaalab install qsar-autoresearch-harness
 aaalab install research-manuscript-harness
+aaalab install classroom-slide-design-harness
 ```
 
 One-shot:
@@ -78,6 +80,7 @@ One-shot:
 npx --yes github:phdgil/AAAlab install autodock-vina-harness
 npx --yes github:phdgil/AAAlab install qsar-autoresearch-harness
 npx --yes github:phdgil/AAAlab install research-manuscript-harness
+npx --yes github:phdgil/AAAlab install classroom-slide-design-harness
 ```
 
 Custom agent home:
@@ -86,6 +89,7 @@ Custom agent home:
 aaalab install autodock-vina-harness --agent-home "$HOME/.codex"
 aaalab install qsar-autoresearch-harness --agent-home "$HOME/.codex"
 aaalab install research-manuscript-harness --agent-home "$HOME/.codex"
+aaalab install classroom-slide-design-harness --agent-home "$HOME/.codex"
 ```
 
 From a local clone:
@@ -96,6 +100,7 @@ PowerShell:
 .\install.ps1 -Harness autodock-vina-harness
 .\install.ps1 -Harness qsar-autoresearch-harness
 .\install.ps1 -Harness research-manuscript-harness
+.\install.ps1 -Harness classroom-slide-design-harness
 ```
 
 macOS/Linux:
@@ -104,6 +109,7 @@ macOS/Linux:
 ./install.sh autodock-vina-harness
 ./install.sh qsar-autoresearch-harness
 ./install.sh research-manuscript-harness
+./install.sh classroom-slide-design-harness
 ```
 
 ## Validate
@@ -140,6 +146,9 @@ AAAlab/
       skills/
         research-manuscript/
         research-manuscript-harness/
+    classroom-slide-design-harness/
+      skills/
+        classroom-slide-design-harness/
 ```
 
 Each harness directory is expected to be self-contained enough to install independently, while the repo root provides shared validation and install entry points.

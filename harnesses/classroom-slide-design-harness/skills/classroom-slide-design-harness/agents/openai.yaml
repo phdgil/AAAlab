@@ -1,0 +1,6 @@
+interface:
+  display_name: "Classroom Slide Design"
+  short_description: "Short visual lectures that lead directly into project work"
+  default_prompt: "Use $classroom-slide-design-harness to create or revise this lesson into a short visual introduction, then render and review the slides before students start the project."
+policy:
+  allow_implicit_invocation: false

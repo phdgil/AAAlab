@@ -26,6 +26,19 @@ jobs:
       - name: Validate all harnesses with npm
         run: npm test
 
+      - name: Setup Python for slide audit tests
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install slide audit dependencies
+        run: python -m pip install -r harnesses/classroom-slide-design-harness/skills/classroom-slide-design-harness/scripts/requirements.txt
+
+      - name: Test classroom slide audit behavior
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python harnesses/classroom-slide-design-harness/skills/classroom-slide-design-harness/scripts/test_audit_pptx.py
+
       - name: Validate all harnesses with PowerShell
         if: runner.os == 'Windows'
         shell: pwsh

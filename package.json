@@ -11,7 +11,7 @@
     "aaalab": "bin/aaalab.js"
   },
   "scripts": {
-    "test": "node bin/aaalab.js validate",
+    "test": "node bin/aaalab.js validate && node scripts/test-classroom-harness.js",
     "validate": "node bin/aaalab.js validate",
     "runtime-check": "node bin/aaalab.js runtime-check autodock-vina-harness"
   },

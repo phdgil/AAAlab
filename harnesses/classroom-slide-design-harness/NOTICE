@@ -1,0 +1,7 @@
+Classroom Slide Design Harness
+Copyright 2026 AAAlab contributors
+Original package content is licensed under Apache-2.0.
+
+Conceptual inspiration: revfactory/harness (https://github.com/revfactory/harness), an Apache-2.0 project describing role separation, artifact handoffs, and producer-reviewer workflows. No upstream plugin code or skill text is vendored in this package.
+
+Private course decks, workbooks, student information and lesson-specific experimental data are not included.

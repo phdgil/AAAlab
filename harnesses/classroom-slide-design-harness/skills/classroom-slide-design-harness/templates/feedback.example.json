@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "status": "example_feedback_not_a_classroom_evaluation",
+  "iteration": 1,
+  "observation": "Repeated text-card layouts were distracting and the introduction was too long.",
+  "generalized_rule": "Choose the visual form and color emphasis from each message; remove material not needed before project work.",
+  "scope": "course_design_default",
+  "affected_slides": [],
+  "changes": [],
+  "checks_actually_run": [],
+  "reviewer_verdict": "not_reviewed",
+  "student_learning_evidence": "not_evaluated",
+  "next_revision_question": "Can students identify the action without reading a paragraph?"
+}

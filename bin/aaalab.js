@@ -217,10 +217,68 @@ function validateAutodockVinaHarness(harnessDir) {
   validateNoVendoredBinaries(harnessDir);
 }
 
+function validateClassroomSlideHarness(harnessDir) {
+  const skillRoot = path.join(harnessDir, "skills", "classroom-slide-design-harness");
+  const required = [
+    "SKILL.md", "agents/openai.yaml", "references/roles.md",
+    "references/visual-playbook.md", "references/trigger-tests.md",
+    "assets/layout-atlas.svg",
+    "templates/brief.example.json", "templates/feedback.example.json",
+    "scripts/audit_pptx.py", "scripts/test_audit_pptx.py", "scripts/requirements.txt",
+    "scripts/validate_harness.py", "scripts/validate_harness.ps1", "scripts/validate_harness.sh"
+  ].map((file) => path.join(skillRoot, file));
+  for (const file of ["README.md", "LICENSE", "NOTICE", "LICENSE_AUDIT.md", "THIRD_PARTY_NOTICES.md", "install.sh", "install.ps1"]) {
+    required.push(path.join(harnessDir, file));
+  }
+  const missing = required.filter((file) => !exists(file));
+  if (missing.length) fail(`Missing classroom slide harness files:\n${missing.join("\n")}`);
+  const protocol = readText(path.join(skillRoot, "SKILL.md"));
+  for (const text of [
+    "name: classroom-slide-design-harness", "Message before theme",
+    "Phase 0: Context Check", "QA Review", "Repeat and improve", "Test Scenarios"
+  ]) {
+    assertContains(protocol, text, `classroom slide protocol: ${text}`);
+  }
+  let brief;
+  let feedback;
+  try {
+    brief = JSON.parse(readText(path.join(skillRoot, "templates", "brief.example.json")));
+    feedback = JSON.parse(readText(path.join(skillRoot, "templates", "feedback.example.json")));
+  } catch (error) {
+    fail(`Invalid classroom slide JSON example: ${error.message}`);
+  }
+  if (!Array.isArray(brief.slides) || !brief.slides.length ||
+      !Number.isFinite(brief.explanation_minutes)) {
+    fail("Classroom slide brief needs slides and a finite time budget");
+  }
+  let minutes = 0;
+  const layouts = new Set();
+  for (const [index, slide] of brief.slides.entries()) {
+    if (slide.number !== index + 1 || !Number.isFinite(slide.minutes) || slide.minutes <= 0 ||
+        !slide.message || !slide.action || !slide.layout) {
+      fail(`Invalid classroom slide brief entry ${index + 1}`);
+    }
+    minutes += slide.minutes;
+    layouts.add(slide.layout);
+  }
+  if (Math.abs(minutes - brief.explanation_minutes) > 0.001) {
+    fail("Classroom slide speaking times do not match the total");
+  }
+  if (layouts.size < Math.min(6, brief.slides.length)) {
+    fail("Classroom slide example needs content-led layout variety");
+  }
+  if (feedback.reviewer_verdict !== "not_reviewed") {
+    fail("Example feedback must not imply an actual completed review");
+  }
+  validateNoVendoredBinaries(harnessDir);
+}
+
 function validateHarness(harnessName) {
   const harnessDir = path.join(harnessesRoot, harnessName);
   if (harnessName === "autodock-vina-harness") {
     validateAutodockVinaHarness(harnessDir);
+  } else if (harnessName === "classroom-slide-design-harness") {
+    validateClassroomSlideHarness(harnessDir);
   } else {
     const skillsDir = path.join(harnessDir, "skills");
     if (!exists(path.join(harnessDir, "README.md"))) fail(`Missing README.md for ${harnessName}`);
@@ -252,6 +310,31 @@ function pythonModuleAvailable(name) {
 }
 
 function runtimeCheck(harnessName) {
+  if (harnessName === "classroom-slide-design-harness") {
+    const checks = [
+      commandAvailable("python"),
+      pythonModuleAvailable("pptx"),
+      pythonModuleAvailable("PIL")
+    ];
+    for (const check of checks) {
+      console.log(`${check.name}: ${check.available ? "available" : "missing"}${check.source ? ` (${check.source})` : ""}`);
+    }
+    if (checks.every((check) => check.available)) {
+      console.log("Preflight verdict: structural PPTX audit dependencies appear available; this is not visual verification.");
+    } else {
+      console.log("Preflight verdict: install the missing audit dependencies before running PPTX checks.");
+      process.exitCode = 1;
+    }
+    if (process.platform === "win32") {
+      const office = pythonModuleAvailable("win32com");
+      console.log(`${office.name}: ${office.available ? "available" : "missing"} (optional Office rendering)`);
+      console.log("Desktop PowerPoint availability is not checked here; verify it with audit_pptx.py --render-office.");
+    } else {
+      console.log("Office rendering requires Windows and desktop PowerPoint. Structural-only audit cannot prove rendered readability.");
+    }
+    return;
+  }
+
   if (harnessName === "autodock-vina-harness") {
     const checks = [
       commandAvailable("vina"),

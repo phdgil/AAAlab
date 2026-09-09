@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "status": "example_to_adapt_not_a_completed_lesson",
+  "audience": "Undergraduates with limited English proficiency",
+  "language": "English",
+  "topic": "Find and evaluate records in public databases",
+  "project_deliverable": "A traceable result sheet and a count of unique items",
+  "explanation_minutes": 17,
+  "output_stem": "database_project_quick_start",
+  "protected_inputs": [],
+  "sources": [],
+  "design_priority": "Message-specific color and visual form before a uniform theme",
+  "slides": [
+    {"number": 1, "minutes": 1, "message": "Introduce a real unresolved project question", "action": "Identify what must be found", "layout": "question and contrast", "source_ids": []},
+    {"number": 2, "minutes": 1.5, "message": "Show the actual work sequence", "action": "Open, match, search, save, count", "layout": "action path", "source_ids": []},
+    {"number": 3, "minutes": 3, "message": "Different databases have different jobs", "action": "Choose the appropriate search route", "layout": "linked comparison table", "source_ids": []},
+    {"number": 4, "minutes": 3, "message": "Separate the two concepts needed for the task", "action": "Select the correct target or field", "layout": "two labeled mechanism diagrams", "source_ids": []},
+    {"number": 5, "minutes": 1.5, "message": "Confirm the identity of the object", "action": "Compare image or structure and identifier", "layout": "large verified visual", "source_ids": []},
+    {"number": 6, "minutes": 2, "message": "Follow one verified search", "action": "Reach the original record", "layout": "numbered navigation route", "source_ids": []},
+    {"number": 7, "minutes": 1.5, "message": "A number needs its measurement context", "action": "Copy fields and an exact source link", "layout": "annotated real evidence", "source_ids": []},
+    {"number": 8, "minutes": 1.5, "message": "Repeated records are not new items", "action": "Count once per scope and deduplicate overall", "layout": "small table and duplicate diagram", "source_ids": []},
+    {"number": 9, "minutes": 1, "message": "Share tasks and check each other", "action": "Assign roles around one shared result", "layout": "team work map", "source_ids": []},
+    {"number": 10, "minutes": 1, "message": "Begin the real project now", "action": "Open the assigned input and submit evidence", "layout": "action poster", "source_ids": []}
+  ]
+}
