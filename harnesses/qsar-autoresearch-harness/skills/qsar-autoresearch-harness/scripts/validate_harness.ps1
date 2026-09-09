@@ -17,16 +17,15 @@ if ([string]::IsNullOrWhiteSpace($ProtocolSkill)) {
 $required = @(
     "SKILL.md",
     "README.md",
-    "agents\openai.yaml",
-    "references	rigger-tests.md",
-    "referencesgents\dataset-contract-auditor.md",
-    "referencesgentseature-prep-lead.md",
-    "referencesgents	raining-eval-lead.md",
-    "referencesgents
-ext-experiment-controller.md",
-    "referencesgents\qa-reviewer.md",
-    "scriptserify_dependency_contract.ps1",
-    "scripts\check_runtime_dependencies.ps1"
+    "agents/openai.yaml",
+    "references/trigger-tests.md",
+    "references/agents/dataset-contract-auditor.md",
+    "references/agents/feature-prep-lead.md",
+    "references/agents/training-eval-lead.md",
+    "references/agents/next-experiment-controller.md",
+    "references/agents/qa-reviewer.md",
+    "scripts/verify_dependency_contract.ps1",
+    "scripts/check_runtime_dependencies.ps1"
 )
 
 $missing = @()
@@ -52,6 +51,6 @@ foreach ($needle in @("name: qsar-autoresearch-harness", "description:", "qsar-a
     }
 }
 
-& (Join-Path $HarnessRoot "scriptserify_dependency_contract.ps1") -HarnessRoot $HarnessRoot -ProtocolSkill $ProtocolSkill
+& (Join-Path $HarnessRoot "scripts/verify_dependency_contract.ps1") -HarnessRoot $HarnessRoot -ProtocolSkill $ProtocolSkill
 
 Write-Output "QSAR autoresearch harness structure OK."
