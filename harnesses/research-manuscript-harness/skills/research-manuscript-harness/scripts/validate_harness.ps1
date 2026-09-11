@@ -13,8 +13,14 @@ $required = @(
     (Join-Path $skillRoot "references\agents\docx-format-auditor.md"),
     (Join-Path $skillRoot "references\agents\qa-reviewer.md"),
     (Join-Path $skillRoot "scripts\audit_docx.py"),
+    (Join-Path $skillRoot "scripts\audit_submission_bundle.py"),
+    (Join-Path $skillRoot "scripts\test_submission_bundle.py"),
+    (Join-Path $skillRoot "scripts\test_submission_bundle_docx.py"),
+    (Join-Path $skillRoot "scripts\test_submission_bundle_workbook.py"),
+    (Join-Path $skillRoot "scripts\test_submission_bundle_safety.py"),
     (Join-Path $protocolRoot "SKILL.md"),
-    (Join-Path $protocolRoot "references\manuscript-author-review-guidelines.md")
+    (Join-Path $protocolRoot "references\manuscript-author-review-guidelines.md"),
+    (Join-Path $protocolRoot "references\submission-bundle-workflow.md")
 )
 $missing = $required | Where-Object { -not (Test-Path -LiteralPath $_) }
 if ($missing) {

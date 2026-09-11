@@ -15,8 +15,14 @@ required=(
   "$SKILL_ROOT/references/agents/docx-format-auditor.md"
   "$SKILL_ROOT/references/agents/qa-reviewer.md"
   "$SKILL_ROOT/scripts/audit_docx.py"
+  "$SKILL_ROOT/scripts/audit_submission_bundle.py"
+  "$SKILL_ROOT/scripts/test_submission_bundle.py"
+  "$SKILL_ROOT/scripts/test_submission_bundle_docx.py"
+  "$SKILL_ROOT/scripts/test_submission_bundle_workbook.py"
+  "$SKILL_ROOT/scripts/test_submission_bundle_safety.py"
   "$PROTOCOL_ROOT/SKILL.md"
   "$PROTOCOL_ROOT/references/manuscript-author-review-guidelines.md"
+  "$PROTOCOL_ROOT/references/submission-bundle-workflow.md"
 )
 for file in "${required[@]}"; do
   [[ -f "$file" ]] || { echo "Missing required harness file: $file" >&2; exit 1; }

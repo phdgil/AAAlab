@@ -422,9 +422,9 @@ function runtimeCheck(harnessName) {
     const hasPython = checks.find((item) => item.name === "python").available;
     const hasDocumentTools = checks.every((item) => item.name === "python" || item.available);
     if (!hasPython || !hasDocumentTools) {
-      console.log("Preflight verdict: Markdown review may proceed, but DOCX or supporting-workbook mutation and verification must stop and report missing python-docx, Pillow, or openpyxl.");
+      console.log("Preflight verdict: Python or optional editing dependencies are missing. Run only supported operations; standalone bundle structure checks need Python, while image verification also needs Pillow. Report unavailable editing or rendering tools.");
     } else {
-      console.log("Preflight verdict: research manuscript DOCX runtime appears available.");
+      console.log("Preflight verdict: document, workbook, and image dependencies appear available. Rendering, independent review, and final bundle checks are still required.");
     }
     return;
   }

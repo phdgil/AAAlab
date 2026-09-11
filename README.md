@@ -14,7 +14,7 @@ Bundled harnesses are:
 |---|---|---|
 | [autodock-vina-harness](harnesses/autodock-vina-harness/README.md) | Multi-agent AutoDock Vina / gnina docking execution, validation, reruns, troubleshooting, and QA | `autodock-vina-harness` |
 | [qsar-autoresearch-harness](harnesses/qsar-autoresearch-harness/README.md) | Multi-agent QSAR workbook auditing, leakage-aware in-vivo preparation, per-table training, bounded next-experiment control, and share-ready result packaging | `qsar-autoresearch-harness` |
-| [research-manuscript-harness](harnesses/research-manuscript-harness/README.md) | Multi-agent research-manuscript creation and revision with evidence, methods, abbreviation, citation, figure, DOCX-format, and independent QA gates | `research-manuscript-harness` |
+| [research-manuscript-harness](harnesses/research-manuscript-harness/README.md) | Complete submission-bundle preparation: main text, concise SI, essential workbooks, discovery-first cover letters, TOC graphics, matched TIFFs, references, rendered proofs, and independent QA | `research-manuscript-harness` |
 | [classroom-slide-design-harness](harnesses/classroom-slide-design-harness/README.md) | Short visual lectures for project-based classes, with message-specific color, simple English, editable PPTX, rendering, and independent review | `classroom-slide-design-harness` |
 
 ## Installation Model

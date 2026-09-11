@@ -1,13 +1,39 @@
 # Research Manuscript Harness
 
-Agent harness for converting research outcomes into publication-level manuscripts and performing evidence-grounded revision of DOCX or Markdown drafts.
+Turn research evidence and the latest author edits into one coherent, recoverable submission package—not just a polished article. The harness coordinates the main manuscript, Supporting Information (SI), workbook, cover letter, graphical table-of-contents (TOC) asset, native-pixel figure TIFFs, rendered PDFs, references, provenance, human declarations, and independent QA without exceeding the evidence.
 
-The package contains two skills:
+Use it when a change in one artifact can make another stale: renamed analyses, revised figures, moved SI content, workbook table decisions, citation repairs, journal packaging, or final submission readiness.
 
-- `research-manuscript`: reusable scientific-writing and document-review protocol.
-- `research-manuscript-harness`: multi-agent orchestration for evidence mapping, methods auditing, abbreviation and citation checks, figure/table review, DOCX formatting, and independent QA.
+## What it enforces
 
-Install both skills together.
+- One authoritative candidate bundle and one executable per-run plan; user steering updates that plan instead of creating a competing plan.
+- Verified byte-for-byte preimages outside the bundle and separately hashed immutable numerical evidence.
+- Latest author edits preserved, with targeted DOCX changes that retain run/paragraph styles, breaks, fields, and table pagination unless normalization is authorized.
+- Complementary SI that adds explanation and reproducibility detail rather than repeating the main text.
+- Authorized workbook keep/merge/move/drop decisions, substantive sheets ordered by first main citation, and retained full precision, formulas, SMARTS or equivalent structures, and provenance.
+- Simultaneous old-to-new mappings across main/SI text, captions, sheet names, title cells, formulas, graphical TOC, filenames, and derivatives.
+- Separate citation-numbering and semantic source-topic review.
+- Figure rendering from fixed hashed data without rescoring or refitting. The requested real provider is used—including Codex CLI image generation when requested—or the task blocks; generation is never faked or silently replaced with a code-drawn substitute.
+- Coordinated replacement and rendered inspection of the journal's graphical TOC raster or DOCX container and, for a DOCX container, its authoritative embedded image.
+- An exact captioned main/SI figure-to-TIFF inventory using native pixels and undistorted RGB/LZW output when required; changing a DPI tag is not treated as added resolution. The graphical TOC is a separate audited artifact, not the package inventory or an implied figure-TIFF entry.
+- Source-native and final-size embedded/rendered visual QA plus an independent scientific reviewer. Machine checks cannot certify readability, citation meaning, or scientific correctness.
+- Concise, discovery-first cover letters rather than timelines, version histories, or technical changelogs.
+- Human confirmation of author, funding, COI, permissions, and actual AI-use facts; declarations are never inferred.
+- Same-filesystem staged publication with verified rollback and exclusive promotion: use a genuinely atomic directory operation only where the platform supports it; otherwise use a guarded, recoverable transaction and withhold `submission-ready` until its completion is checked. Cross-volume moves and sequential file copies are not atomic; lock failures are reported without deleting user Office locks.
+
+The protocol explicitly distinguishes positive-only from verified-negative evaluation, source-overlap consistency from external validation, full-fit from held-out results, fixed-baseline augmentation from end-to-end training, and hash folds from verified scaffold-disjoint folds. “Source-overlap consistency” covers comparisons whose source, selection, or overlap rules do not establish independence from model construction; it does not assert that every retained record overlaps.
+
+## Package contents
+
+The package installs two existing skills together:
+
+- `research-manuscript`: reusable scientific and submission-bundle protocol.
+- `research-manuscript-harness`: multi-agent orchestration using the existing specialist role layout and bounded producer/reviewer handoffs.
+
+Detailed rules live in:
+
+- `skills/research-manuscript/references/submission-bundle-workflow.md`
+- `skills/research-manuscript/references/manuscript-author-review-guidelines.md`
 
 ## Install
 
@@ -53,7 +79,7 @@ copy skills/research-manuscript-harness -> <AGENT_HOME>/skills/research-manuscri
 
 Restart the agent runtime after installation.
 
-## Validate
+## Validate the installed harness
 
 ```bash
 aaalab validate research-manuscript-harness
@@ -79,41 +105,52 @@ Research manuscript harness structure OK.
 
 ## Runtime prerequisites
 
-- Skill-enabled agent runtime.
-- Multi-agent support for the full harness.
-- Python for local document audits.
-- `python-docx` for DOCX reading, editing, and structural verification.
-- Pillow for embedded-image dimensions and aspect-ratio checks.
-- `openpyxl` for consolidated Supporting Information workbook and worksheet-parity audits.
+- A skill-enabled agent runtime.
+- Multi-agent support for the full harness; the protocol skill also supports bounded direct work.
+- Python for local document and bundle audits.
+- `python-docx` for DOCX inspection/editing and structural verification.
+- Pillow for raster decoding, native dimensions, RGB/pixel-identity, and aspect-ratio checks; retain a separate recorded LZW-compression check because the bundle auditor does not certify compression.
+- `openpyxl` for workbook inventory, formulas, title cells, sheet-order, and citation-parity audits.
+- The actual requested image-generation provider/interface when generation is in scope.
 
-Markdown review can proceed without DOCX dependencies. DOCX mutation or verification must stop and report missing dependencies rather than claiming success.
+Missing mutation, rendering, or provider capabilities must block that operation and be reported; the harness does not claim success through a fallback.
 
 ## Example prompt
 
 ```text
-Use $research-manuscript-harness to reconcile this manuscript with current results, apply all author comments, improve scientific structure, audit abbreviations and citation order, repair multi-panel figures and legends, enforce the journal Word format, and run independent QA on the final DOCX.
+Use $research-manuscript-harness to prepare one submission bundle from the latest author-edited files. Preserve verified preimages outside the bundle and freeze the numerical evidence; reconcile the main text, SI, supporting workbook, cover, graphical TOC, figure TIFFs, PDFs, and references; preserve author Word formatting; run independent final-size visual, citation-semantic, and scientific QA; then report the exact readiness status without submitting externally.
 ```
 
-## Enforced review rules
+## Automated structural audit
 
-- Evidence mapping before prose mutation.
-- An executable revision plan before mutation, followed by execution and final verification in the same run.
-- Local and global application of literal `{...}` comments before comment removal.
-- Publication-level literature explanation.
-- Reproducible methods with explicit thresholds, folds, and leakage controls.
-- Scientific rationale for descriptor sets, filtering intent, cutoffs, fold design, top-N caps, and external-source selection.
-- Separate abbreviation scopes for abstract and main body.
-- First-citation-order references.
-- Results ordered by evidential dependency.
-- Main/SI method-result alignment and consolidated XLSX delivery for exact supporting tables.
-- Unboxed parenthesized multi-panel labels and panel-specific legends.
-- Mandatory visual inspection of source and embedded figures at final manuscript display size.
-- Blocking checks for clipped annotations, unreadable fonts, weak contrast, and unintended panel data.
-- Nonredundant figures and tables.
-- Actual DOCX table-object checks that block missing, concatenated, or malformed tables.
-- Final DOCX formatting and image-geometry checks.
-- Independent QA before “review-ready” or “submission-ready” claims.
+`scripts/audit_docx.py` remains the focused per-document/workbook helper. The bundle auditor below adds cross-package path, inventory, manifest, and external-receipt checks; neither tool replaces independent review.
+
+`audit_submission_bundle.py` uses the Python standard library for DOCX/XLSX package, XML, JSON, path, SHA-256, citation, reference, and manifest checks. Pillow is its sole optional import; when relevant figure or graphical-TOC pixels cannot be inspected because Pillow is missing, the structural gate is `UNVERIFIED` and the command exits nonzero.
+
+After all artifacts, fresh PDFs, and the external QA receipt are final, generate the exact-coverage checksum manifest last and run:
+
+```bash
+python scripts/audit_submission_bundle.py \
+  --bundle-root PATH \
+  --main-docx REL \
+  --si-docx REL \
+  --workbook REL \
+  --tiff-dir REL \
+  --toc REL \
+  --checksum-manifest REL \
+  --qa-receipt REL
+```
+
+`--toc` is the journal's graphical TOC raster or a DOCX container with an embedded graphic; it is not a file list. `--checksum-manifest` is the sole complete bundle inventory. All configured paths must remain inside the bundle; symlinks, junctions, and escapes are rejected. The tool is read-only and emits one `aaalab.submission-bundle-audit/v1` JSON receipt to standard output.
+
+- Exit `0`: `structural_machine_audit` is `PASS`, external QA is `CURRENT_APPROVED`, `verdict` is `SUBMISSION_READY`, and `publication_eligibility` is `ELIGIBLE`.
+- Exit `1`: `structural_machine_audit` is `FAIL` or `UNVERIFIED`; `publication_eligibility` is `NOT_ELIGIBLE`.
+- Exit `2`: structural gates pass, but external QA is `MISSING`, `INVALID`, `STALE`, or `NOT_APPROVED`; `verdict` is `BLOCKED` and `publication_eligibility` is `NOT_ELIGIBLE`.
+
+The optional QA input uses schema `aaalab.external-qa/v1`. It requires reviewer `identity`, `role`, and `independence_basis`; a timezone-bearing `reviewed_at`; top-level `outcome: approved`; approved outcomes for `visual_readability`, `citation_semantics`, and `scientific_review`; no `unresolved_blockers`; and current hashes for the main DOCX, SI DOCX, workbook, graphical TOC, and every TIFF discovered under `--tiff-dir`. The machine does not authenticate the reviewer or prove scientific correctness.
+
+The QA receipt is a regular bundle file and therefore belongs in the checksum manifest; it is not listed in or encoded into the graphical TOC. Store audit JSON and the final publication receipt outside the audited bundle to avoid circular hashes. See the authoritative workflow for exact schemas, output fields, manifest rules, guarded promotion, and status definitions.
 
 ## License
 
-Original harness text and scripts are Apache-2.0. Optional document libraries remain external and retain their own licenses. See `LICENSE_AUDIT.md` and `THIRD_PARTY_NOTICES.md`.
+Original harness text and scripts are Apache-2.0. Optional document and provider libraries remain external and retain their own licenses. See `LICENSE_AUDIT.md` and `THIRD_PARTY_NOTICES.md`.

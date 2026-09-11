@@ -1,6 +1,6 @@
 interface:
   display_name: "Research Manuscript Harness"
-  short_description: "Coordinate publication-level manuscript writing, evidence audits, figure and table review, DOCX formatting, and independent QA."
-  default_prompt: "Use $research-manuscript-harness for substantive manuscript creation or revision. Load $research-manuscript as the protocol source, audit evidence before mutation, treat abstract and main-body abbreviations independently, and require final figure, citation, formatting, and QA gates."
+  short_description: "Coordinate complete research-manuscript submission-bundle preparation, asset QA, and readiness review."
+  default_prompt: "Use $research-manuscript-harness to prepare and audit one authoritative research-manuscript submission bundle. Load $research-manuscript as the protocol source; discover authority and preserve an author-edited preimage before mutation; reconcile evidence; prepare the manuscript, reader-focused SI, supporting workbook, concise cover letter, figures, graphical TOC, matched RGB TIFFs, rendered PDFs, manifests, and QA receipts; synchronize every dependency; run actual requested Codex imagegen with disclosure; inspect source and rendered visuals at final size; require a passed automated structural audit and current hash-bound external QA evidence for submission readiness; and distinguish review-ready, submission-ready, and journal-submitted."
 policy:
   allow_implicit_invocation: true

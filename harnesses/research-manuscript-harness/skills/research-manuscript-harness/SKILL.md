@@ -1,6 +1,6 @@
 ---
 name: research-manuscript-harness
-description: "Coordinate a multi-agent research-manuscript harness for evidence mapping, scientific editing, methods reproducibility, abbreviation and citation auditing, figure and table QA, DOCX formatting, and independent final review. Use for real manuscript creation or substantive revision; load research-manuscript as the protocol source."
+description: "Coordinate a multi-agent research-manuscript workflow from evidence and author edits through one submission bundle: main/SI, workbook, cover, graphical TOC, figure TIFF/PDF assets, references, provenance, structural audit, independent QA, and guarded publication. Load research-manuscript as the protocol source."
 metadata:
   protocol_skill: "research-manuscript"
   protocol_relative_path: "../research-manuscript/SKILL.md"
@@ -8,184 +8,218 @@ metadata:
 
 # Research Manuscript Harness
 
-This harness coordinates specialist reviewers around the `research-manuscript` protocol. It converts research outcomes into a coherent manuscript or performs a publication-level revision of DOCX and Markdown drafts while preserving scientific claim boundaries.
+This harness coordinates specialist producers and reviewers around the sibling `research-manuscript` protocol. It can create or revise a manuscript, but its complete unit of work is one coherent submission package whose editable documents, data, images, derivatives, references, declarations, provenance, and receipts agree.
 
 ## Execution Mode
 
 Use producer-reviewer gates with the main agent as orchestrator.
 
-- Use read-only agents for evidence, citation, abbreviation, and QA audits.
-- Use editing agents only after the authoritative manuscript and evidence sources are identified.
-- Keep figure generation separate from manuscript prose editing when practical.
-- Require an independent QA pass after all edits.
-- Require an explicit executable plan before any document mutation, then execute it through final verification in the same run.
-- For small single-issue requests, use the protocol directly rather than spawning the full roster.
+- The orchestrator owns the authority ledger, the only executable plan, scope decisions, cross-artifact integration, invalidation, and final promotion.
+- Use read-only agents for evidence, methods, citation, abbreviation, package, and final QA audits.
+- Give editing agents explicit file boundaries only after authority, external preimages, and immutable evidence are established.
+- Keep numerical analysis separate from figure rendering. Rendering uses fixed hashed inputs and never rescoring/refitting.
+- Require an independent reviewer after the last content or asset edit. A producer never approves its own submission-ready result.
+- Use the protocol directly for a bounded single-artifact issue; use this roster when dependencies span artifacts or independent lanes materially reduce risk.
+
+Create one evidence-grounded `run-plan.json` before mutation. A user steer updates that plan and appends one decision-log entry; it does not produce a second plan or duplicate already completed work. Invalidate and rerun only affected downstream gates.
 
 ## Context Preservation Boundary
 
 Manuscript work and harness maintenance are separate workflows.
 
 - Never build, package, validate, or publish this harness inside an active manuscript run.
-- If the user asks to convert new manuscript rules into a reusable harness, hand the finalized rule document and a compact requirement receipt to an isolated worktree, separate agent session, or bounded subagent.
-- Keep manuscript evidence, numerical decisions, and unresolved author comments in the manuscript context; do not copy the full conversational history into the harness-building context.
-- Return only the harness path, validation results, commit identifier, publication link, and material limitations to the manuscript context.
+- If the user asks to convert manuscript lessons into reusable harness rules, hand a generalized rule set and compact requirement receipt to an isolated worktree, separate session, or bounded subagent.
+- Keep manuscript evidence, private numerical decisions, author identities, unresolved comments, correspondence, credentials, workstation paths, and session artifacts in the manuscript context.
+- Public harness files contain no private case data. Return only changed harness paths, validation evidence, publication identifiers/links, and material limitations to the manuscript context.
 
 ## Protocol Source
 
 Before execution, load:
 
-1. sibling skill `$research-manuscript`, normally at `../research-manuscript/SKILL.md`;
-2. `../research-manuscript/references/manuscript-author-review-guidelines.md`;
-3. target-journal author instructions supplied by the user or retrieved from the official journal source;
-4. project-local evidence, figures, tables, Supporting Information, and release metadata.
+1. sibling skill `$research-manuscript`, normally `../research-manuscript/SKILL.md`;
+2. `../research-manuscript/references/submission-bundle-workflow.md` as the authoritative package workflow;
+3. `../research-manuscript/references/manuscript-author-review-guidelines.md` as the editorial/scientific rule set;
+4. target-journal instructions supplied by the user or obtained from the official journal source;
+5. project-local evidence, author-edited documents, figures, tables, workbooks, and release metadata.
 
-User instructions and official journal requirements override defaults. Record every override.
+User instructions and official journal requirements override defaults. Record the source, exact scope, and affected gates for every override.
 
 ## Agent Roster
 
-| Role file | Purpose | Primary output |
-|---|---|---|
-| `references/agents/evidence-structure-editor.md` | Map claims to evidence and revise narrative order | evidence map, section revision plan |
-| `references/agents/methods-reproducibility-auditor.md` | Audit data construction, thresholds, folds, and leakage controls | methods audit |
-| `references/agents/abbreviation-citation-auditor.md` | Audit independent abstract/main abbreviation scopes and citation order | language/reference audit |
-| `references/agents/figure-table-editor.md` | Audit redundancy, panel labels, legends, placement, aspect ratios, and final-size visual readability | figure/table audit |
-| `references/agents/docx-format-auditor.md` | Audit line spacing, plain black text, headings, author block, tables, and images | format audit |
-| `references/agents/qa-reviewer.md` | Independently verify final scientific and document integrity | QA verdict |
+Preserve these specialist roles; use only the subset needed for the assigned scope.
 
-Use fewer agents when scope is narrow, but never let the final producer self-approve a submission-ready result.
+| Role file | Purpose | Required output |
+|---|---|---|
+| `references/agents/evidence-structure-editor.md` | Establish bundle inventory and claim/evidence structure; audit cover/SI organization and redundancy | bundle inventory/evidence map, cover/SI decisions, ordered bundle revision plan |
+| `references/agents/methods-reproducibility-auditor.md` | Audit data construction, thresholds, fits, folds, comparisons, leakage controls, and reproducibility boundaries | methods/evidence audit with blockers and exact supporting artifacts |
+| `references/agents/abbreviation-citation-auditor.md` | Audit independent abstract/main terminology, citation order, and source-topic support | language audit plus separate numbering and semantic-citation findings |
+| `references/agents/figure-table-editor.md` | Reconcile figures, tables, workbook dependencies, graphical TOC, figure TIFFs, and final-size rendering | synchronized dependency audit, matched RGB/LZW figure-TIFF inventory, source/rendered visual-QA receipt |
+| `references/agents/docx-format-auditor.md` | Verify final DOCX structure and preservation of styles, breaks, tables, pagination, fields, and image geometry | structural/format audit against approved inventory and journal rules |
+| `references/agents/qa-reviewer.md` | Independently review the complete final bundle | fail-closed verdict, readiness label, blocking-fix list, submission-bundle QA receipt |
+
+Do not let specialists cascade tasks or silently widen scope. Every handoff includes `run_id`, `bundle_id`, input hashes, recovery/evidence manifest hashes, one assigned plan step, allowed paths, required output, blockers, and the downstream gate invalidated by a change. Producers return before/after hashes and evidence; reviewers do not repair their own findings.
 
 ## Workspace Layout
 
-Create one run directory unless the user supplies one:
+Create one run directory unless the user supplies an equivalent layout:
 
 ```text
-manuscript_run_<project>_<timestamp>/
-  00_intake/
-  01_evidence/
-  02_section_audits/
-  03_revision/
-  04_figures_tables/
-  05_formatting/
-  06_qa/
-  final/
-  run_index.json
+submission_run_<project>_<run-id>/
+  recovery/                 # verified preimages, outside the bundle
+  evidence/                 # immutable numerical/source evidence
+  work/                     # renders and conversions
+  reviews/                  # durable review evidence and audit JSON
+  run-plan.json             # the only executable plan
+  decision-log.jsonl        # steering/authorization log
+  publication-receipt.json  # final receipt outside bundle
+  bundle.stage/             # the only candidate submission bundle
 ```
 
-Do not overwrite the only manuscript copy without a recoverable source or version-control state.
+Never place recovery preimages in the submission package. Never create competing `final` directories. Promote `bundle.stage/` only after all applicable gates pass.
 
 ## Workflow
 
 ### Phase 0: Context and authority
 
-- Identify the authoritative manuscript and Supporting Information.
-- Identify whether the current request is creation, substantive revision, formatting-only, or QA-only.
-- Read embedded comments, tracked decisions, and project guidance.
-- Treat every literal `{...}` comment as an instruction inventory. Map each to its local passage and any global rule before any mutation.
-- Record target journal and current author metadata.
-- Stop if the manuscript target or evidence source is ambiguous.
+The orchestrator:
 
-Produce an executable plan that names section changes, main/SI moves, evidence artifacts, comment applications, figure/table/workbook actions, and final audits. Do not mutate documents before this plan is complete.
+- reads official journal instructions and inventories main/SI/workbook/cover/graphical-TOC/figure-TIFF/PDF/reference candidates;
+- establishes actual authority and reconciles latest author edits by content and provenance, not filename or timestamp alone;
+- inventories comments and tracked changes without accepting, rejecting, or deleting them implicitly;
+- records exact authorized mutation and table-removal scope;
+- obtains or lists as blockers the human facts for authorship, funding, COI, permissions, submission history, and actual AI use;
+- identifies the requested figure provider, including Codex CLI image generation when specified;
+- makes and hash-verifies recoverable preimages outside the bundle;
+- freezes and hashes numerical evidence, full-precision data, formulas, SMARTS or equivalent structures, scripts, and provenance separately;
+- writes the single executable plan with owners, dependencies, checks, and invalidation rules.
 
-### Phase 1: Evidence and structure audit
+Gate: authority, recovery, evidence, journal contract, human-fact blockers, and allowed scope are unambiguous before any editor mutates a file.
 
-Run the evidence-structure editor and methods auditor in parallel when the manuscript is non-trivial.
+### Phase 1: Evidence, methods, and dependency map
 
-Required checks:
+Run the evidence-structure editor and methods-reproducibility auditor in parallel for non-trivial work. Merge their findings into one orchestrator-owned map; do not let either agent create another plan.
 
-- all numerical claims map to current artifacts;
-- retained, merged, rejected, and failed candidates are explained;
-- Results order follows evidential dependency;
-- Methods disclose data construction, exclusions, thresholds, folds, and leakage controls;
-- methods give scientific rationale for descriptor selection, near-positive filtering intent, numerical cutoffs, fold construction, candidate caps, external-source search breadth, and databases selected for direct assessment;
-- main Methods describe analyses reported in main Results, while SI-only analyses have SI methods;
-- Discussion does not restate Results or exceed evidence.
+Required coverage:
 
-Gate: no prose mutation until stale or contradictory claims are mapped.
+- every numerical claim maps to current immutable evidence;
+- main and SI form a complementary narrative rather than repeat one another;
+- retained, merged, rejected, and failed candidates are explained where decision-relevant;
+- Methods disclose data construction, exclusions, representations, thresholds, fits, folds, and leakage controls with scientific rationale;
+- positive-only versus verified-negative, source-overlap versus external validation, full-fit versus held-out, fixed-baseline augmentation versus end-to-end, and hash-fold versus scaffold-disjoint claims are accurate;
+- source-overlap consistency denotes a comparison whose source, selection, or overlap rules do not establish independence from model construction; it does not imply that every retained record overlaps;
+- a simultaneous `old -> new` ledger covers main/SI text, captions, fields, workbook sheets/title cells/formulas/defined names, cover, graphical TOC, filenames, TIFF/PDF derivatives, and checksum-manifest entries;
+- downstream artifacts and gates invalidated by each planned change are explicit.
 
-### Phase 2: Language and reference audit
+Gate: stale or contradictory claims and incomplete rename dependencies block mutation.
 
-Run the abbreviation-citation auditor.
+### Phase 2: Coordinated manuscript and SI revision
 
-Hard requirements:
+The main editor applies approved changes in reading order while SI is revised as complementary explanatory/reproducibility material. Preserve author XML run/paragraph properties, styles, fields, breaks, tracked-change state, comments, and table pagination outside the authorized scope. Do not reconstruct DOCX files from plain text or normalize formatting unless exact properties are approved.
 
-- abstract and main body are separate abbreviation scopes;
-- first use in each scope is `full name (abbreviation)`;
-- references follow first-citation order;
-- table abbreviations are already defined or expanded;
-- proper names do not receive invented expansions.
+Literal brace comments and other instructions remain until their local and global applications are complete. A moved analysis carries its method, result, limitation, citation, figure/table, and workbook references with it.
 
-### Phase 3: Manuscript revision
+Gate: the latest author content survives; main/SI claims and identifiers agree; no unsupported claim strengthening or duplicated explanatory block remains.
 
-The main editor applies approved changes section by section:
+### Phase 3: Workbook keep/drop and synchronized mappings
 
-1. title and author block;
-2. abstract;
-3. Introduction;
-4. Materials and Methods;
-5. Results;
-6. Discussion;
-7. Conclusions;
-8. availability and Supporting Information statements;
-9. references.
+The evidence-structure editor proposes and the orchestrator approves an occurrence-level audit for each sheet and reader-facing table: `keep`, `merge`, `move`, or `remove-from-reader-view`, with rationale, dependencies, and explicit removal authority.
 
-Remove brace comments only after their instruction has been applied locally and, when relevant, globally. Balance the abstract around final scoring-function outcomes for all retained categories; keep auxiliary methods proportionate. Move baselines measuring a different construct to SI with rationale, and integrate secondary validation into the relevant category-validation subsection.
+- Order substantive sheets by first citation in the main manuscript, then first SI citation; place data dictionary/provenance/audit sheets after substantive content.
+- Remove unnecessary duplicate reader-facing tables only inside authorized scope.
+- Preserve raw full precision, formulas, SMARTS or equivalent patterns, units, identifiers, and row provenance in retained artifacts and the external recovery archive.
+- Apply every approved old-to-new name simultaneously across sheet names, title cells, formulas, defined names, main/SI citations, captions, and links; broken or stale references block the gate.
 
-### Phase 4: Figure and table gate
+Gate: every sheet/table has a disposition, no unauthorized data loss occurred, and retained computational content remains reproducible.
 
-Run the figure-table editor.
+### Phase 4: Reference and language gates
 
-Hard requirements:
+The abbreviation-citation auditor performs independent checks for:
 
-- no redundant table/figure pair without justification;
-- when a table and figure duplicate information, the SI retains the figure and one consolidated supporting XLSX workbook retains exact data on clearly named sheets;
-- figures are located with their legends;
-- each multi-panel image visibly uses `(A)`, `(B)`, `(C)`, etc.;
-- panel labels have no bounding boxes;
-- every panel is described separately in the legend;
-- source and embedded image aspect ratios match;
-- numbering follows first appearance.
-- every generated figure and embedded rendering are opened and visually inspected at final manuscript display width or an equivalent downscaled preview; file, dimension, package, or hash checks alone do not pass this gate;
-- clipped, truncated, undersized, low-contrast, or panel-incomplete figures block release and must be regenerated with corrected layout/headroom;
-- panel labels, legends, numbering, manuscript references, and panel descriptions agree after panel insertion, removal, or reordering;
-- the figure QA receipt states display width/scale and findings for clipping, minimum readable text, contrast, panel completeness, and embedded-image checks.
+1. abstract and main-body abbreviation/terminology scopes;
+2. first-citation numbering, continuity, ranges, and bibliography pairing;
+3. source-level semantic and topic support for each cited proposition.
 
-### Phase 5: DOCX formatting gate
+Renumbering is not semantic verification. Topic similarity is not proof that a source supports the claim strength. Unresolved sources block readiness.
 
-Run the DOCX format auditor or equivalent local verification.
+### Phase 5: Figure, graphical-TOC, and TIFF gate
 
-Default contract:
+The figure-table editor works only from frozen, hashed data. It may correct presentation but never rescore, refit, resample, change thresholds, reassign folds, or recompute results. A numerical defect returns to Phase 1 with a new authorized evidence version and invalidates downstream work.
 
-- double-line spacing everywhere;
-- plain black text;
-- no bold, italics, underlining, or colored text unless journal-required;
-- author block centered under title;
-- all tables and images retained;
-- DOCX package opens and parses;
-- actual final DOCX table structures are present and distinct; missing, concatenated, or malformed tables block completion, and captions are not table evidence.
+Honor the actual requested generator/provider. For requested Codex CLI image generation, invoke its real installed capability and record actual provider/tool provenance. Unavailable generation is a blocker; a fake call, placeholder, or silent code-drawn substitute is prohibited.
 
-### Phase 6: Independent QA
+Required reconciliation:
 
-The QA reviewer reads the final manuscript from beginning to end and returns:
+- exact numbers, categories, denominators, units, evidence scope, labels, icons, permissions, panels, captions, and actual AI-use facts;
+- the journal's graphical TOC is treated as a raster or DOCX-container deliverable, never as a package file inventory; when it is a DOCX container, its authoritative embedded image is replaced and rendered for inspection;
+- every captioned main/SI figure maps to exactly one figure TIFF, with no missing/orphan TIFF identifier; the graphical TOC is audited separately and is not implicitly part of this mapping;
+- required TIFFs preserve native pixels and aspect ratio and use RGB/LZW without treating a DPI tag as additional resolution;
+- source images, the graphical TOC, and final-size DOCX/PDF renderings receive recorded visual inspection.
 
-- `PASS`, `PASS WITH DISCLOSED LIMITATIONS`, or `BLOCK`;
-- exact blocking passages;
-- numerical or citation mismatches;
-- numerical cross-checks against authoritative CSV, JSON, or XLSX artifacts;
-- formatting failures;
-- independent audits of abstract/main-body abbreviations, citation order, tables, figures, workbook sheets, formatting, and unresolved comments;
-- final-size visual figure checks, including clipping, readable minimum text, contrast, panel completeness, and embedded-image rendering;
-- unresolved submission metadata.
+Gate: figure/table/workbook dependencies agree, graphical-TOC replacement is real, the captioned-figure TIFF inventory is exact, and independent visual findings have no blockers.
 
-A manuscript may be called review-ready only after all blocking items are fixed and the final file is re-audited.
+### Phase 6: Cover, formatting, and rendered derivatives
+
+Write a concise discovery-first cover letter centered on the research question, finding, strongest evidence, bounded significance, and journal fit. Exclude timelines, version histories, implementation narration, and technical changelogs.
+
+The DOCX format auditor checks the journal contract and approved object inventory, using `scripts/audit_docx.py` where its focused checks apply. Coverage includes preserved run/paragraph properties, fields, breaks, tables, pagination, and image geometry. It does not require every preimage table to remain; it requires every final keep/drop decision to be authorized, represented correctly, and recoverable.
+
+Render PDFs only after editable artifacts are final. Compare DOCX and PDF at final physical display size for pagination, tables, captions, equations, fonts, links, contrast, clipping, panel completeness, and distortion. Any later source edit invalidates its PDF.
+
+### Phase 7: Human fact gate
+
+Obtain human evidence for author order/details, funding, COI, permissions, prior/submitted status, and actual AI disclosure. Do not infer a declaration from manuscript content or tool logs. Store only a durable evidence reference in public-safe receipts, not private correspondence.
+
+Gate: unresolved required facts block `submission-ready` even when files parse and hashes match.
+
+### Phase 8: Independent QA
+
+The independent QA reviewer reads and renders the final bundle from beginning to end. The verdict is fail-closed and includes:
+
+- exact claim/number/method/reference mismatches and supporting evidence;
+- separate semantic-citation and numbering findings;
+- main/SI/workbook/cover/graphical-TOC/TIFF/PDF/checksum-manifest consistency;
+- source-native and final-size embedded/rendered visual evidence;
+- DOCX style/break/table-pagination preservation and approved removal dispositions;
+- human metadata/disclosure blockers;
+- `BLOCK`, `review-ready`, or `submission-ready` recommendation, never `journal-submitted` without submission evidence.
+
+The reviewer produces the `aaalab.external-qa/v1` receipt described in the authoritative workflow. It requires reviewer `identity`, `role`, and a descriptive `independence_basis`; timezone-bearing `reviewed_at`; top-level `outcome: approved`; approved `visual_readability`, `citation_semantics`, and `scientific_review` scope outcomes; an empty `unresolved_blockers` array; and exact current hashes for main DOCX, SI DOCX, workbook, graphical TOC, and every TIFF discovered under `--tiff-dir`. Preserve detailed review evidence separately in the run records. The auditor cannot authenticate reviewer identity or scientific claims; booleans and machine-check success are not proof.
+
+Gate: fix every blocker, then repeat every invalidated review against new hashes.
+
+### Phase 9: Manifest, automated structural audit, and guarded publication
+
+After verified preimages, final content, fresh PDFs, and current external QA:
+
+1. include the external QA receipt as a regular bundle file; do not place an inventory or receipt listing in the graphical TOC;
+2. generate the exact-coverage checksum manifest last as the sole complete package inventory, excluding only itself and Office `~$*` lock files;
+3. run `scripts/audit_submission_bundle.py` with the exact interface in `submission-bundle-workflow.md`;
+4. store audit JSON outside the bundle to avoid a hash cycle;
+5. require exit `0`, `structural_machine_audit: PASS`, external-QA gate `CURRENT_APPROVED`, `verdict: SUBMISSION_READY`, and `publication_eligibility: ELIGIBLE` as pre-promotion evidence, not yet as the published destination's readiness label; exit `1` means structural `FAIL` or `UNVERIFIED`, while exit `2` means structural `PASS` without current approved QA;
+6. promote under exclusive access from same-filesystem staging, using a genuinely atomic directory operation only where supported; otherwise use the verified rollback transaction defined in `submission-bundle-workflow.md`, report rather than delete user Office locks, preserve the prior verified bundle on any promotion or rollback failure, and apply `submission-ready` only after rechecking the completed destination;
+7. write the external publication receipt from the authoritative schema/example.
+
+This is an automated structural audit, never automated scientific verification.
+
+Keep statuses separate and evidence-backed:
+
+- `review-ready` has no unresolved content, scientific, citation, or visual blocker after independent review but may have explicit submission-only blockers;
+- `submission-ready` satisfies all package, human, external-QA, and current-hash gates;
+- `journal-submitted` requires durable evidence of actual transmission/receipt;
+- Git source, PyPI, and GitHub release assets each require their own publication evidence and do not imply one another or journal status.
+
+Do not perform an external submission or release without user authorization and the required credentials.
 
 ## Deliverables
 
-- revised manuscript in the requested format;
-- revised Supporting Information when affected;
-- updated figures and legends when affected;
-- audit receipt listing checks actually performed;
-- unresolved-input list for authors, funding, competing interests, or repository metadata.
+- one authoritative staged or fully verified promoted submission bundle;
+- coordinated main manuscript, SI, workbook, cover, graphical TOC, figure TIFFs, PDFs, references, checksum manifest, and external QA receipt as journal-required;
+- recovery-preimage and immutable-evidence manifests outside the bundle;
+- the single executable plan and append-only decision log;
+- producer/reviewer receipts with final hashes and durable evidence;
+- external structural-audit JSON and final publication receipt;
+- explicit unresolved facts, limitations, and separately evidenced readiness/publication statuses.
 
 ## Test Scenarios
 
-See `references/trigger-tests.md`. The harness must distinguish substantive manuscript work from simple grammar questions and must fail closed when authoritative evidence or the target file is unknown.
+See `references/trigger-tests.md`. The harness must distinguish narrow editorial questions from artifact mutation and full-package preparation, fail closed on ambiguous authority or missing evidence, preserve the context-isolation boundary, and never equate a machine pass with scientific or submission approval.
