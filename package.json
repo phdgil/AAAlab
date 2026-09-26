@@ -1,6 +1,6 @@
 {
   "name": "aaalab-harnesses",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "AAAlab agent harness installer and validator.",
   "license": "Apache-2.0",
   "repository": {
@@ -13,7 +13,8 @@
   "scripts": {
     "test": "node bin/aaalab.js validate && node scripts/test-classroom-harness.js",
     "validate": "node bin/aaalab.js validate",
-    "runtime-check": "node bin/aaalab.js runtime-check autodock-vina-harness"
+    "runtime-check": "node bin/aaalab.js runtime-check autodock-vina-harness",
+    "runtime-check:openmra": "node bin/aaalab.js runtime-check openmra-harness"
   },
   "files": [
     "assets",
