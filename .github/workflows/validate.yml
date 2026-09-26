@@ -39,6 +39,11 @@ jobs:
           PYTHONDONTWRITEBYTECODE: "1"
         run: python harnesses/classroom-slide-design-harness/skills/classroom-slide-design-harness/scripts/test_audit_pptx.py
 
+      - name: Test OpenMRA provenance and resume behavior without GUI
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s harnesses/openmra-harness/skills/openmra-harness/scripts -p "test_*.py"
+
       - name: Validate all harnesses with PowerShell
         if: runner.os == 'Windows'
         shell: pwsh

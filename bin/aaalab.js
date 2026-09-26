@@ -217,6 +217,78 @@ function validateAutodockVinaHarness(harnessDir) {
   validateNoVendoredBinaries(harnessDir);
 }
 
+function validateOpenMraHarness(harnessDir) {
+  const skillRoot = path.join(harnessDir, "skills", "openmra-harness");
+  const required = [
+    path.join(harnessDir, "README.md"),
+    path.join(harnessDir, "LICENSE"),
+    path.join(harnessDir, "LICENSE_AUDIT.md"),
+    path.join(harnessDir, "THIRD_PARTY_NOTICES.md"),
+    path.join(harnessDir, "install.ps1"),
+    path.join(harnessDir, "install.sh"),
+    path.join(skillRoot, "SKILL.md"),
+    path.join(skillRoot, "agents", "openai.yaml"),
+    path.join(skillRoot, "references", "gui-operator.md"),
+    path.join(skillRoot, "references", "model-validation.md"),
+    path.join(skillRoot, "references", "report-validator.md"),
+    path.join(skillRoot, "references", "trigger-tests.md"),
+    path.join(skillRoot, "scripts", "openmra_runner.py"),
+    path.join(skillRoot, "scripts", "report_validation.py"),
+    path.join(skillRoot, "scripts", "validate_harness.ps1"),
+    path.join(skillRoot, "scripts", "check_runtime_dependencies.ps1")
+  ];
+
+  const missing = required.filter((file) => !exists(file));
+  if (missing.length > 0) {
+    fail(`Missing required OpenMRA harness files:\n${missing.join("\n")}`);
+  }
+
+  const skill = readText(path.join(skillRoot, "SKILL.md"));
+  for (const needle of [
+    "name: openmra-harness", "OpenMRA v0.2.0", "RM mode only",
+    "One GUI operator", "report_validation.py", "--resume", "Scientific anomaly"
+  ]) {
+    assertContains(skill, needle, `OpenMRA SKILL.md must include ${needle}`);
+  }
+
+  const forbidden = new Set([".exe", ".dll", ".pyd", ".zip", ".xlsx", ".xls", ".pptx", ".png", ".jpg", ".jpeg"]);
+  const matches = collectFiles(harnessDir).filter((file) => forbidden.has(path.extname(file).toLowerCase()));
+  if (matches.length > 0) {
+    fail(`OpenMRA harness contains private data or vendored binaries:\n${matches.join("\n")}`);
+  }
+
+  const npmIgnore = readText(path.join(harnessDir, ".npmignore"));
+  assertContains(npmIgnore, "__pycache__/", "OpenMRA package must exclude Python cache directories");
+  assertContains(npmIgnore, "*.py[cod]", "OpenMRA package must exclude compiled Python files");
+
+  const packCommand = process.platform === "win32" ? (process.env.ComSpec || "cmd.exe") : "npm";
+  const packArgs = process.platform === "win32"
+    ? ["/d", "/s", "/c", "npm.cmd pack --dry-run --json --ignore-scripts"]
+    : ["pack", "--dry-run", "--json", "--ignore-scripts"];
+  const pack = spawnSync(packCommand, packArgs, {
+    cwd: repoRoot,
+    encoding: "utf8"
+  });
+  if (pack.status !== 0) {
+    fail(`Could not inspect npm package contents: ${(pack.error && pack.error.message) || pack.stderr || pack.stdout || "unknown npm error"}`);
+  }
+  let packResult;
+  try {
+    packResult = JSON.parse(pack.stdout);
+  } catch (error) {
+    fail(`Could not parse npm pack dry-run output: ${error.message}`);
+  }
+  const packageInfo = Array.isArray(packResult) ? packResult[0] : packResult[Object.keys(packResult)[0]];
+  const packedFiles = (packageInfo && packageInfo.files ? packageInfo.files : []).map((item) => item.path.replace(/\\/g, "/"));
+  const packedCaches = packedFiles.filter((file) =>
+    file.startsWith("harnesses/openmra-harness/") &&
+    (/(^|\/)__pycache__(\/|$)/.test(file) || /\.pyc$/i.test(file))
+  );
+  if (packedCaches.length > 0) {
+    fail(`OpenMRA npm package contains Python cache artifacts:\n${packedCaches.join("\n")}`);
+  }
+}
+
 function validateClassroomSlideHarness(harnessDir) {
   const skillRoot = path.join(harnessDir, "skills", "classroom-slide-design-harness");
   const required = [
@@ -277,6 +349,8 @@ function validateHarness(harnessName) {
   const harnessDir = path.join(harnessesRoot, harnessName);
   if (harnessName === "autodock-vina-harness") {
     validateAutodockVinaHarness(harnessDir);
+  } else if (harnessName === "openmra-harness") {
+    validateOpenMraHarness(harnessDir);
   } else if (harnessName === "classroom-slide-design-harness") {
     validateClassroomSlideHarness(harnessDir);
   } else {
@@ -307,6 +381,16 @@ function pythonModuleAvailable(name) {
   const code = `import importlib.util, sys; sys.exit(0 if importlib.util.find_spec(${JSON.stringify(name)}) else 1)`;
   const result = spawnSync("python", ["-c", code], { encoding: "utf8" });
   return { name: `python module: ${name}`, available: result.status === 0, source: "python" };
+}
+
+function pythonVersionAvailable(major, minor) {
+  const py = commandAvailable("python");
+  if (!py.available) {
+    return { name: `python >= ${major}.${minor}`, available: false, source: "python not found" };
+  }
+  const code = `import sys; sys.exit(0 if sys.version_info >= (${major}, ${minor}) else 1)`;
+  const result = spawnSync("python", ["-c", code], { encoding: "utf8" });
+  return { name: `python >= ${major}.${minor}`, available: result.status === 0, source: "python" };
 }
 
 function runtimeCheck(harnessName) {
@@ -425,6 +509,38 @@ function runtimeCheck(harnessName) {
       console.log("Preflight verdict: Python or optional editing dependencies are missing. Run only supported operations; standalone bundle structure checks need Python, while image verification also needs Pillow. Report unavailable editing or rendering tools.");
     } else {
       console.log("Preflight verdict: document, workbook, and image dependencies appear available. Rendering, independent review, and final bundle checks are still required.");
+    }
+    return;
+  }
+
+  if (harnessName === "openmra-harness") {
+    const checks = [
+      pythonVersionAvailable(3, 11),
+      pythonModuleAvailable("pywinauto"),
+      pythonModuleAvailable("PIL")
+    ];
+
+    for (const check of checks) {
+      const status = check.available ? "available" : "missing";
+      console.log(`${check.name}: ${status}${check.source ? ` (${check.source})` : ""}`);
+    }
+
+    const isWindows = process.platform === "win32";
+    console.log(`Windows interactive GUI platform: ${isWindows ? "available" : "missing"}`);
+    const app = process.env.OPENMRA_APP;
+    let appAvailable = null;
+    if (app) {
+      appAvailable = exists(path.resolve(app)) && path.extname(app).toLowerCase() === ".exe";
+      console.log(`OpenMRA executable: ${appAvailable ? "available" : "missing or invalid"} (${path.resolve(app)})`);
+    } else {
+      console.log("OpenMRA executable: not checked (set OPENMRA_APP or run openmra_runner.py preflight --app <path>)");
+    }
+
+    if (!isWindows || checks.some((item) => !item.available) || appAvailable === false) {
+      console.log("Preflight verdict: OpenMRA GUI execution must stop and report missing dependencies.");
+      process.exitCode = 1;
+    } else {
+      console.log("Preflight verdict: required automation dependencies appear available; verify the exact executable and unlocked desktop before execution.");
     }
     return;
   }

@@ -1,0 +1,6 @@
+interface:
+  display_name: "OpenMRA Harness"
+  short_description: "Run and verify OpenMRA RM workbook batches on Windows."
+  default_prompt: "Use $openmra-harness to run these RM-mode workbooks through the OpenMRA v0.2.0 English Windows GUI, preserve a resumable audit trail, and validate each exported report read-only."
+policy:
+  allow_implicit_invocation: true

@@ -14,6 +14,7 @@ Bundled harnesses are:
 |---|---|---|
 | [autodock-vina-harness](harnesses/autodock-vina-harness/README.md) | Multi-agent AutoDock Vina / gnina docking execution, validation, reruns, troubleshooting, and QA | `autodock-vina-harness` |
 | [qsar-autoresearch-harness](harnesses/qsar-autoresearch-harness/README.md) | Multi-agent QSAR workbook auditing, leakage-aware in-vivo preparation, per-table training, bounded next-experiment control, and share-ready result packaging | `qsar-autoresearch-harness` |
+| [openmra-harness](harnesses/openmra-harness/README.md) | Auditable Windows GUI execution and read-only report validation for OpenMRA v0.2.0 RM-mode workbooks | `openmra-harness` |
 | [research-manuscript-harness](harnesses/research-manuscript-harness/README.md) | Complete submission-bundle preparation: main text, concise SI, essential workbooks, discovery-first cover letters, TOC graphics, matched TIFFs, references, rendered proofs, and independent QA | `research-manuscript-harness` |
 | [classroom-slide-design-harness](harnesses/classroom-slide-design-harness/README.md) | Short visual lectures for project-based classes, with message-specific color, simple English, editable PPTX, rendering, and independent review | `classroom-slide-design-harness` |
 
@@ -70,6 +71,7 @@ Recommended:
 ```bash
 aaalab install autodock-vina-harness
 aaalab install qsar-autoresearch-harness
+aaalab install openmra-harness
 aaalab install research-manuscript-harness
 aaalab install classroom-slide-design-harness
 ```
@@ -79,6 +81,7 @@ One-shot:
 ```bash
 npx --yes github:phdgil/AAAlab install autodock-vina-harness
 npx --yes github:phdgil/AAAlab install qsar-autoresearch-harness
+npx --yes github:phdgil/AAAlab install openmra-harness
 npx --yes github:phdgil/AAAlab install research-manuscript-harness
 npx --yes github:phdgil/AAAlab install classroom-slide-design-harness
 ```
@@ -88,6 +91,7 @@ Custom agent home:
 ```bash
 aaalab install autodock-vina-harness --agent-home "$HOME/.codex"
 aaalab install qsar-autoresearch-harness --agent-home "$HOME/.codex"
+aaalab install openmra-harness --agent-home "$HOME/.codex"
 aaalab install research-manuscript-harness --agent-home "$HOME/.codex"
 aaalab install classroom-slide-design-harness --agent-home "$HOME/.codex"
 ```
@@ -99,6 +103,7 @@ PowerShell:
 ```powershell
 .\install.ps1 -Harness autodock-vina-harness
 .\install.ps1 -Harness qsar-autoresearch-harness
+.\install.ps1 -Harness openmra-harness
 .\install.ps1 -Harness research-manuscript-harness
 .\install.ps1 -Harness classroom-slide-design-harness
 ```
@@ -108,6 +113,7 @@ macOS/Linux:
 ```bash
 ./install.sh autodock-vina-harness
 ./install.sh qsar-autoresearch-harness
+./install.sh openmra-harness
 ./install.sh research-manuscript-harness
 ./install.sh classroom-slide-design-harness
 ```
@@ -142,6 +148,9 @@ AAAlab/
       skills/
         qsar-autoresearch/
         qsar-autoresearch-harness/
+    openmra-harness/
+      skills/
+        openmra-harness/
     research-manuscript-harness/
       skills/
         research-manuscript/
