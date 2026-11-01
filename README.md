@@ -16,7 +16,6 @@ Bundled harnesses are:
 | [qsar-autoresearch-harness](harnesses/qsar-autoresearch-harness/README.md) | Multi-agent QSAR workbook auditing, leakage-aware in-vivo preparation, per-table training, bounded next-experiment control, and share-ready result packaging | `qsar-autoresearch-harness` |
 | [openmra-harness](harnesses/openmra-harness/README.md) | Auditable Windows GUI execution and read-only report validation for OpenMRA v0.2.0 RM-mode workbooks | `openmra-harness` |
 | [research-manuscript-harness](harnesses/research-manuscript-harness/README.md) | Complete submission-bundle preparation: main text, concise SI, essential workbooks, discovery-first cover letters, TOC graphics, matched TIFFs, references, rendered proofs, and independent QA | `research-manuscript-harness` |
-| [classroom-slide-design-harness](harnesses/classroom-slide-design-harness/README.md) | Short visual lectures for project-based classes, with message-specific color, simple English, editable PPTX, rendering, and independent review | `classroom-slide-design-harness` |
 
 ## Installation Model
 
@@ -73,7 +72,7 @@ aaalab install autodock-vina-harness
 aaalab install qsar-autoresearch-harness
 aaalab install openmra-harness
 aaalab install research-manuscript-harness
-aaalab install classroom-slide-design-harness
+aaalab install korean-document-style-harness
 ```
 
 One-shot:
@@ -83,7 +82,7 @@ npx --yes github:phdgil/AAAlab install autodock-vina-harness
 npx --yes github:phdgil/AAAlab install qsar-autoresearch-harness
 npx --yes github:phdgil/AAAlab install openmra-harness
 npx --yes github:phdgil/AAAlab install research-manuscript-harness
-npx --yes github:phdgil/AAAlab install classroom-slide-design-harness
+npx --yes github:phdgil/AAAlab install korean-document-style-harness
 ```
 
 Custom agent home:
@@ -93,7 +92,7 @@ aaalab install autodock-vina-harness --agent-home "$HOME/.codex"
 aaalab install qsar-autoresearch-harness --agent-home "$HOME/.codex"
 aaalab install openmra-harness --agent-home "$HOME/.codex"
 aaalab install research-manuscript-harness --agent-home "$HOME/.codex"
-aaalab install classroom-slide-design-harness --agent-home "$HOME/.codex"
+aaalab install korean-document-style-harness --agent-home "$HOME/.codex"
 ```
 
 From a local clone:
@@ -105,7 +104,7 @@ PowerShell:
 .\install.ps1 -Harness qsar-autoresearch-harness
 .\install.ps1 -Harness openmra-harness
 .\install.ps1 -Harness research-manuscript-harness
-.\install.ps1 -Harness classroom-slide-design-harness
+.\install.ps1 -Harness korean-document-style-harness
 ```
 
 macOS/Linux:
@@ -115,7 +114,7 @@ macOS/Linux:
 ./install.sh qsar-autoresearch-harness
 ./install.sh openmra-harness
 ./install.sh research-manuscript-harness
-./install.sh classroom-slide-design-harness
+./install.sh korean-document-style-harness
 ```
 
 ## Validate
@@ -155,9 +154,6 @@ AAAlab/
       skills/
         research-manuscript/
         research-manuscript-harness/
-    classroom-slide-design-harness/
-      skills/
-        classroom-slide-design-harness/
 ```
 
 Each harness directory is expected to be self-contained enough to install independently, while the repo root provides shared validation and install entry points.
