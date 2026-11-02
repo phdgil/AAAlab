@@ -13,7 +13,7 @@ Bundled harnesses are:
 | Harness | Purpose | Install name |
 |---|---|---|
 | [autodock-vina-harness](harnesses/autodock-vina-harness/README.md) | Multi-agent AutoDock Vina / gnina docking execution, validation, reruns, troubleshooting, and QA | `autodock-vina-harness` |
-| [qsar-autoresearch-harness](harnesses/qsar-autoresearch-harness/README.md) | Multi-agent QSAR workbook auditing, leakage-aware in-vivo preparation, per-table training, bounded next-experiment control, and share-ready result packaging | `qsar-autoresearch-harness` |
+| [qsar-autoresearch-harness](harnesses/qsar-autoresearch-harness/README.md) | End-to-end QSAR stage skills, independent review and bounded improvement | `qsar-autoresearch-harness` |
 | [openmra-harness](harnesses/openmra-harness/README.md) | Auditable Windows GUI execution and read-only report validation for OpenMRA v0.2.0 RM-mode workbooks | `openmra-harness` |
 | [research-manuscript-harness](harnesses/research-manuscript-harness/README.md) | Complete submission-bundle preparation: main text, concise SI, essential workbooks, discovery-first cover letters, TOC graphics, matched TIFFs, references, rendered proofs, and independent QA | `research-manuscript-harness` |
 
@@ -147,6 +147,14 @@ AAAlab/
       skills/
         qsar-autoresearch/
         qsar-autoresearch-harness/
+        qsar-collect/
+        qsar-curate/
+        qsar-preprocess/
+        qsar-features/
+        qsar-train/
+        qsar-evaluate/
+        qsar-improve/
+        qsar-review/
     openmra-harness/
       skills/
         openmra-harness/

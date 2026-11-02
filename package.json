@@ -11,10 +11,13 @@
     "aaalab": "bin/aaalab.js"
   },
   "scripts": {
-    "test": "node bin/aaalab.js validate",
+    "test": "node bin/aaalab.js validate && node scripts/test-qsar-skills.js",
     "validate": "node bin/aaalab.js validate",
     "runtime-check": "node bin/aaalab.js runtime-check autodock-vina-harness",
-    "runtime-check:openmra": "node bin/aaalab.js runtime-check openmra-harness"
+    "runtime-check:openmra": "node bin/aaalab.js runtime-check openmra-harness",
+    "test:qsar-native": "python scripts/test_qsar_native_agents.py",
+    "test:qsar-runtime": "python scripts/test_qsar_runtime.py",
+    "test:qsar-python": "python -m unittest discover -s scripts -p test_qsar_*.py"
   },
   "files": [
     "assets",

@@ -295,6 +295,14 @@ function validateHarness(harnessName) {
     validateAutodockVinaHarness(harnessDir);
   } else if (harnessName === "openmra-harness") {
     validateOpenMraHarness(harnessDir);
+  } else if (harnessName === "qsar-autoresearch-harness") {
+    const skillRoot = path.join(harnessDir, "skills", harnessName);
+    try {
+      require(path.join(skillRoot, "scripts", "validate_skill_map.js")).validate(skillRoot);
+    } catch (error) {
+      fail(`Invalid QSAR skill assignments: ${error.message}`);
+    }
+    validateNoVendoredBinaries(harnessDir);
   } else {
     const skillsDir = path.join(harnessDir, "skills");
     if (!exists(path.join(harnessDir, "README.md"))) fail(`Missing README.md for ${harnessName}`);
@@ -385,6 +393,7 @@ function runtimeCheck(harnessName) {
   if (harnessName === "qsar-autoresearch-harness") {
     const checks = [
       commandAvailable("python"),
+      pythonVersionAvailable(3, 11),
       pythonModuleAvailable("pandas"),
       pythonModuleAvailable("sklearn"),
       pythonModuleAvailable("openpyxl"),
@@ -400,9 +409,10 @@ function runtimeCheck(harnessName) {
     const hasCore = checks.every((item) => item.name === "python" || item.available);
 
     if (!hasPython || !hasCore) {
-      console.log("Preflight verdict: QSAR harness must stop and report missing Python or modeling dependencies.");
+      console.log("Preflight verdict: QSAR harness must stop and report missing Python >= 3.11 or modeling dependencies.");
+      process.exitCode = 1;
     } else {
-      console.log("Preflight verdict: QSAR workbook runtime appears available.");
+      console.log("Preflight verdict: QSAR collection, curation, training and evaluation core runtime appears available; optional methods require stage preflight.");
     }
     return;
   }

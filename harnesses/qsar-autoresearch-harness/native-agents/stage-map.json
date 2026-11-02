@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "skill_root_placeholder": "{{SKILLS_ROOT}}",
+  "roles": {
+    "qsar-contract-analyst": {
+      "file": "qsar-contract-analyst.toml",
+      "skill": "qsar-autoresearch",
+      "kind": "producer",
+      "stages": [
+        "contract"
+      ]
+    },
+    "qsar-source-collector": {
+      "file": "qsar-source-collector.toml",
+      "skill": "qsar-collect",
+      "kind": "producer",
+      "stages": [
+        "collection"
+      ]
+    },
+    "qsar-data-curator": {
+      "file": "qsar-data-curator.toml",
+      "skill": "qsar-curate",
+      "kind": "producer",
+      "stages": [
+        "curation"
+      ]
+    },
+    "qsar-preprocess-engineer": {
+      "file": "qsar-preprocess-engineer.toml",
+      "skill": "qsar-preprocess",
+      "kind": "producer",
+      "stages": [
+        "preprocessing"
+      ]
+    },
+    "qsar-feature-engineer": {
+      "file": "qsar-feature-engineer.toml",
+      "skill": "qsar-features",
+      "kind": "producer",
+      "stages": [
+        "features"
+      ]
+    },
+    "qsar-trainer": {
+      "file": "qsar-trainer.toml",
+      "skill": "qsar-train",
+      "kind": "producer",
+      "stages": [
+        "training"
+      ]
+    },
+    "qsar-evaluator": {
+      "file": "qsar-evaluator.toml",
+      "skill": "qsar-evaluate",
+      "kind": "producer",
+      "stages": [
+        "development-evaluation",
+        "terminal-evaluation"
+      ]
+    },
+    "qsar-improvement-lead": {
+      "file": "qsar-improvement-lead.toml",
+      "skill": "qsar-improve",
+      "kind": "producer",
+      "stages": [
+        "improvement"
+      ]
+    },
+    "qsar-release-editor": {
+      "file": "qsar-release-editor.toml",
+      "skill": "qsar-evaluate",
+      "kind": "producer",
+      "stages": [
+        "release"
+      ]
+    },
+    "qsar-data-reviewer": {
+      "file": "qsar-data-reviewer.toml",
+      "skill": "qsar-review",
+      "kind": "reviewer",
+      "stages": [
+        "collection",
+        "curation"
+      ]
+    },
+    "qsar-model-reviewer": {
+      "file": "qsar-model-reviewer.toml",
+      "skill": "qsar-review",
+      "kind": "reviewer",
+      "stages": [
+        "preprocessing",
+        "features",
+        "training",
+        "development-evaluation",
+        "terminal-evaluation",
+        "release"
+      ]
+    },
+    "qsar-method-reviewer": {
+      "file": "qsar-method-reviewer.toml",
+      "skill": "qsar-review",
+      "kind": "reviewer",
+      "stages": [
+        "contract",
+        "improvement"
+      ]
+    }
+  },
+  "stages": {
+    "contract": {
+      "producer": "qsar-contract-analyst",
+      "reviewer": "qsar-method-reviewer"
+    },
+    "collection": {
+      "producer": "qsar-source-collector",
+      "reviewer": "qsar-data-reviewer"
+    },
+    "curation": {
+      "producer": "qsar-data-curator",
+      "reviewer": "qsar-data-reviewer"
+    },
+    "preprocessing": {
+      "producer": "qsar-preprocess-engineer",
+      "reviewer": "qsar-model-reviewer"
+    },
+    "features": {
+      "producer": "qsar-feature-engineer",
+      "reviewer": "qsar-model-reviewer"
+    },
+    "training": {
+      "producer": "qsar-trainer",
+      "reviewer": "qsar-model-reviewer"
+    },
+    "development-evaluation": {
+      "producer": "qsar-evaluator",
+      "reviewer": "qsar-model-reviewer"
+    },
+    "terminal-evaluation": {
+      "producer": "qsar-evaluator",
+      "reviewer": "qsar-model-reviewer"
+    },
+    "improvement": {
+      "producer": "qsar-improvement-lead",
+      "reviewer": "qsar-method-reviewer"
+    },
+    "release": {
+      "producer": "qsar-release-editor",
+      "reviewer": "qsar-model-reviewer"
+    }
+  }
+}

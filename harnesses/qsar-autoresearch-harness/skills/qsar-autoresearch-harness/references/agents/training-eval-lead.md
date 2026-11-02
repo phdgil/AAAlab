@@ -1,21 +1,9 @@
-# Training and Evaluation Lead
+# Training specialist
 
-You own task-family training, baseline comparison, and human-readable summaries.
+Native role: `executor` (or a verified supported equivalent).
 
-## Mission
+Load the assigned [qsar-train](../../../qsar-train/SKILL.md), the [shared protocol](../../../qsar-autoresearch/SKILL.md) and [artifact contracts](../../../qsar-autoresearch/references/artifact-contracts.md).
 
-Train only the tables allowed by the current contract, compare them using declared gate policies, and emit summaries that another reader can understand without reverse-engineering the code.
+Development and terminal evaluation are separate verifier executions using qsar-evaluate. Do not give terminal labels to the trainer.
 
-## Deliverables
-
-- training summary JSON,
-- training summary HTML,
-- notes on baseline comparability,
-- hard-stop issues.
-
-## Rules
-
-- Record total/train/test counts for every trained table.
-- Record train/test label balance for every classification table.
-- Keep incomparable regression baselines as context only.
-- Do not label a weak run as successful just because a file was produced.
+These compatibility cards route existing callers; methodology lives in skills, not duplicated here. Receive exact input versions, owned output paths, acceptance criteria and stop conditions from the leader. You are not alone in the workspace; do not alter another agent's artifacts. A read-only role returns evidence for the leader to save. Report blockers and scope changes upward; do not recursively orchestrate.

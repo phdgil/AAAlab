@@ -19,6 +19,8 @@ $required = @(
     "README.md",
     "agents/openai.yaml",
     "references/trigger-tests.md",
+    "references/agent-skills.json",
+    "scripts/validate_skill_map.js",
     "references/agents/dataset-contract-auditor.md",
     "references/agents/feature-prep-lead.md",
     "references/agents/training-eval-lead.md",
@@ -45,7 +47,7 @@ if ($missing.Count -gt 0) {
 }
 
 $skill = Get-Content -Raw -LiteralPath (Join-Path $HarnessRoot "SKILL.md")
-foreach ($needle in @("name: qsar-autoresearch-harness", "description:", "qsar-autoresearch", "Phase 0: Context check", "Phase 6: QA review", "Test Scenarios")) {
+foreach ($needle in @("name: qsar-autoresearch-harness", "description:", "qsar-autoresearch", "Phase 0: Context check", "QA review and release", "Test Scenarios")) {
     if ($skill -notlike "*$needle*") {
         Write-Error "SKILL.md is missing required text: $needle"
     }
@@ -54,3 +56,6 @@ foreach ($needle in @("name: qsar-autoresearch-harness", "description:", "qsar-a
 & (Join-Path $HarnessRoot "scripts/verify_dependency_contract.ps1") -HarnessRoot $HarnessRoot -ProtocolSkill $ProtocolSkill
 
 Write-Output "QSAR autoresearch harness structure OK."
+
+& node (Join-Path $HarnessRoot "scripts/validate_skill_map.js")
+if ($LASTEXITCODE -ne 0) { throw "QSAR skill assignment validation failed" }

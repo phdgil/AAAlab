@@ -1,0 +1,289 @@
+{
+  "schema_version": 1,
+  "shared_protocol": "qsar-autoresearch/SKILL.md",
+  "artifact_contracts": "qsar-autoresearch/references/artifact-contracts.md",
+  "stages": [
+    {
+      "id": "contract",
+      "producer": {
+        "agent_type": "analyst",
+        "skill": "qsar-autoresearch",
+        "native_agent_type": "qsar-contract-analyst"
+      },
+      "reviewer": {
+        "agent_type": "critic",
+        "skill": "qsar-review",
+        "distinct_execution": true,
+        "native_agent_type": "qsar-method-reviewer"
+      },
+      "requires": [],
+      "terminal_access": false,
+      "condition": "accepted upstream receipts"
+    },
+    {
+      "id": "collection",
+      "producer": {
+        "agent_type": "executor",
+        "skill": "qsar-collect",
+        "native_agent_type": "qsar-source-collector"
+      },
+      "reviewer": {
+        "agent_type": "verifier",
+        "skill": "qsar-review",
+        "distinct_execution": true,
+        "native_agent_type": "qsar-data-reviewer"
+      },
+      "requires": [
+        "contract"
+      ],
+      "terminal_access": false,
+      "condition": "accepted upstream receipts"
+    },
+    {
+      "id": "curation",
+      "producer": {
+        "agent_type": "executor",
+        "skill": "qsar-curate",
+        "native_agent_type": "qsar-data-curator"
+      },
+      "reviewer": {
+        "agent_type": "verifier",
+        "skill": "qsar-review",
+        "distinct_execution": true,
+        "native_agent_type": "qsar-data-reviewer"
+      },
+      "requires": [
+        "collection"
+      ],
+      "terminal_access": false,
+      "condition": "accepted upstream receipts"
+    },
+    {
+      "id": "preprocessing",
+      "producer": {
+        "agent_type": "executor",
+        "skill": "qsar-preprocess",
+        "native_agent_type": "qsar-preprocess-engineer"
+      },
+      "reviewer": {
+        "agent_type": "verifier",
+        "skill": "qsar-review",
+        "distinct_execution": true,
+        "native_agent_type": "qsar-model-reviewer"
+      },
+      "requires": [
+        "curation"
+      ],
+      "terminal_access": false,
+      "condition": "accepted upstream receipts"
+    },
+    {
+      "id": "features",
+      "producer": {
+        "agent_type": "executor",
+        "skill": "qsar-features",
+        "native_agent_type": "qsar-feature-engineer"
+      },
+      "reviewer": {
+        "agent_type": "verifier",
+        "skill": "qsar-review",
+        "distinct_execution": true,
+        "native_agent_type": "qsar-model-reviewer"
+      },
+      "requires": [
+        "preprocessing"
+      ],
+      "terminal_access": false,
+      "condition": "accepted upstream receipts"
+    },
+    {
+      "id": "training",
+      "producer": {
+        "agent_type": "executor",
+        "skill": "qsar-train",
+        "native_agent_type": "qsar-trainer"
+      },
+      "reviewer": {
+        "agent_type": "verifier",
+        "skill": "qsar-review",
+        "distinct_execution": true,
+        "native_agent_type": "qsar-model-reviewer"
+      },
+      "requires": [
+        "features"
+      ],
+      "terminal_access": false,
+      "condition": "accepted upstream receipts"
+    },
+    {
+      "id": "development-evaluation",
+      "producer": {
+        "agent_type": "verifier",
+        "skill": "qsar-evaluate",
+        "native_agent_type": "qsar-evaluator"
+      },
+      "reviewer": {
+        "agent_type": "verifier",
+        "skill": "qsar-review",
+        "distinct_execution": true,
+        "native_agent_type": "qsar-model-reviewer"
+      },
+      "requires": [
+        "training"
+      ],
+      "terminal_access": false,
+      "condition": "accepted upstream receipts"
+    },
+    {
+      "id": "improvement",
+      "producer": {
+        "agent_type": "executor",
+        "skill": "qsar-improve",
+        "native_agent_type": "qsar-improvement-lead"
+      },
+      "reviewer": {
+        "agent_type": "critic",
+        "skill": "qsar-review",
+        "distinct_execution": true,
+        "native_agent_type": "qsar-method-reviewer"
+      },
+      "requires": [
+        "development-evaluation"
+      ],
+      "terminal_access": false,
+      "condition": "accepted upstream receipts"
+    },
+    {
+      "id": "terminal-evaluation",
+      "producer": {
+        "agent_type": "verifier",
+        "skill": "qsar-evaluate",
+        "native_agent_type": "qsar-evaluator"
+      },
+      "reviewer": {
+        "agent_type": "verifier",
+        "skill": "qsar-review",
+        "distinct_execution": true,
+        "native_agent_type": "qsar-model-reviewer"
+      },
+      "requires": [
+        "improvement"
+      ],
+      "terminal_access": true,
+      "condition": "reviewed STOP and locked pipeline"
+    },
+    {
+      "id": "release",
+      "producer": {
+        "agent_type": "executor",
+        "skill": "qsar-evaluate",
+        "native_agent_type": "qsar-release-editor"
+      },
+      "reviewer": {
+        "agent_type": "verifier",
+        "skill": "qsar-review",
+        "distinct_execution": true,
+        "native_agent_type": "qsar-model-reviewer"
+      },
+      "requires": [
+        "terminal-evaluation"
+      ],
+      "terminal_access": false,
+      "condition": "accepted upstream receipts"
+    }
+  ],
+  "native_roles": {
+    "qsar-contract-analyst": {
+      "skill": "qsar-autoresearch",
+      "kind": "producer",
+      "stages": [
+        "contract"
+      ]
+    },
+    "qsar-source-collector": {
+      "skill": "qsar-collect",
+      "kind": "producer",
+      "stages": [
+        "collection"
+      ]
+    },
+    "qsar-data-curator": {
+      "skill": "qsar-curate",
+      "kind": "producer",
+      "stages": [
+        "curation"
+      ]
+    },
+    "qsar-preprocess-engineer": {
+      "skill": "qsar-preprocess",
+      "kind": "producer",
+      "stages": [
+        "preprocessing"
+      ]
+    },
+    "qsar-feature-engineer": {
+      "skill": "qsar-features",
+      "kind": "producer",
+      "stages": [
+        "features"
+      ]
+    },
+    "qsar-trainer": {
+      "skill": "qsar-train",
+      "kind": "producer",
+      "stages": [
+        "training"
+      ]
+    },
+    "qsar-evaluator": {
+      "skill": "qsar-evaluate",
+      "kind": "producer",
+      "stages": [
+        "development-evaluation",
+        "terminal-evaluation"
+      ]
+    },
+    "qsar-improvement-lead": {
+      "skill": "qsar-improve",
+      "kind": "producer",
+      "stages": [
+        "improvement"
+      ]
+    },
+    "qsar-release-editor": {
+      "skill": "qsar-evaluate",
+      "kind": "producer",
+      "stages": [
+        "release"
+      ]
+    },
+    "qsar-data-reviewer": {
+      "skill": "qsar-review",
+      "kind": "reviewer",
+      "stages": [
+        "collection",
+        "curation"
+      ]
+    },
+    "qsar-model-reviewer": {
+      "skill": "qsar-review",
+      "kind": "reviewer",
+      "stages": [
+        "preprocessing",
+        "features",
+        "training",
+        "development-evaluation",
+        "terminal-evaluation",
+        "release"
+      ]
+    },
+    "qsar-method-reviewer": {
+      "skill": "qsar-review",
+      "kind": "reviewer",
+      "stages": [
+        "contract",
+        "improvement"
+      ]
+    }
+  }
+}
