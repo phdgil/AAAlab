@@ -62,6 +62,23 @@ Release through qsar-evaluate release mode, reconciling all current reviews and 
 
 This revision supplies stage skills, dispatch wiring and review procedures. The local [runtime](scripts/RUNTIME.md) now enforces dispatch bindings, independent review gates, pipeline identity, invalidation and terminal reservation. Project-specific scientific adapters and their acceptance remain separately validated; packaging/runtime checks cannot establish scientific correctness. See the shared protocol's maintenance record when changing methods.
 
+## Harness feedback during continued use
+
+When a stage exposes recurring failures, user corrections or reusable workflow
+lessons, capture a compact observation with the harness version and evidence
+locators in the run's existing maintenance log or owned
+`maintenance/feedback.md`. Capture is optional evidence for maintenance, never a
+new scientific acceptance gate. Keep private source records and transcripts local.
+
+Route requests to improve reusable code or instructions to
+[qsar-evolve](../qsar-evolve/SKILL.md). At a checkpoint, hand the bounded issue to
+a separate maintenance context with only the necessary development evidence.
+Continue safe research on the pinned version; block affected dependent work if a
+confirmed defect invalidates its evidence. Adopt validated changes in the next run,
+or explicitly version and invalidate affected stages before resuming. Avoid
+editing dependencies still used by a running process. Model-development
+interventions remain assigned to qsar-improve through the existing stage gates.
+
 ## Test Scenarios
 
 - Full research: collect declared LD50 sources, audit endpoint/identity/units, use all eligible strata and planned feature/model searches, review each output, execute justified development improvement, then terminal evaluation.

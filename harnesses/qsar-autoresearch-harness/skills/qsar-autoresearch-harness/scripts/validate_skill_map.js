@@ -15,6 +15,15 @@ function validate(harnessRoot = path.resolve(__dirname, "..")) {
     }
     return resolved;
   };
+  const checkSkill = name => {
+    const file = checkFile(`${name}/SKILL.md`);
+    const text = fs.readFileSync(file, "utf8").replace(/\r\n/g, "\n");
+    const header = text.match(/^---\n([\s\S]*?)\n---(?:\n|$)/)?.[1];
+    if (!header || !header.split("\n").includes(`name: ${name}`) ||
+        !/^description: \S.+$/m.test(header)) throw new Error(`Invalid skill frontmatter: ${file}`);
+  };
+  // Maintenance is bundled, but is deliberately not a research-stage assignment.
+  checkSkill("qsar-evolve");
   if (registry.schema_version !== 1 || !Array.isArray(registry.stages)) throw new Error("Unsupported skill map schema");
   checkFile(registry.shared_protocol);
   checkFile(registry.artifact_contracts);
@@ -25,9 +34,7 @@ function validate(harnessRoot = path.resolve(__dirname, "..")) {
       if (!assignment || !roles.has(assignment.agent_type) || !/^[a-z0-9-]+$/.test(assignment.skill)) throw new Error(`Invalid native role/skill: ${stage.id}`);
       const native = registry.native_roles?.[assignment.native_agent_type];
       if (!native || native.kind !== kind || native.skill !== assignment.skill || !native.stages?.includes(stage.id)) throw new Error(`Native role ownership mismatch: ${stage.id}/${kind}`);
-      const file = checkFile(`${assignment.skill}/SKILL.md`);
-      const text = fs.readFileSync(file, "utf8").replace(/\r\n/g, "\n");
-      if (!text.startsWith("---\n") || !text.includes(`name: ${assignment.skill}\n`) || !/^description: .+/m.test(text)) throw new Error(`Invalid skill frontmatter: ${file}`);
+      checkSkill(assignment.skill);
     }
     const expected = index ? [stages[index - 1]] : [];
     if (JSON.stringify(stage.requires) !== JSON.stringify(expected)) throw new Error(`Missing upstream acceptance dependency: ${stage.id}`);

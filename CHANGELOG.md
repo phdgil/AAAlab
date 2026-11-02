@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Bundled `qsar-evolve` to capture run feedback, validate reusable harness improvements and carry a recorded version into subsequent runs while preserving active research evidence.
 - Added QSAR collection, curation, preprocessing, feature generation, training, evaluation, improvement and independent review skills, with 12 native agent roles and portable runtime tools.
 - Added auditable source coverage, molecular identity and curation evidence, fold-local model search, sealed evaluation and release checks.
 - Hardened interrupted training recovery: reconcile saved evidence before reuse, preserve failed attempts and reject duplicate search choices so trial counts and recorded costs remain accurate.

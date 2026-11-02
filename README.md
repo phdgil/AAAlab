@@ -155,6 +155,7 @@ AAAlab/
         qsar-evaluate/
         qsar-improve/
         qsar-review/
+        qsar-evolve/
     openmra-harness/
       skills/
         openmra-harness/

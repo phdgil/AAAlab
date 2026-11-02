@@ -43,6 +43,11 @@ Release summaries include total/train/test counts, classification label balance,
 
 These skills define methods and handoffs. They do not themselves supply a universal scientific pipeline or a security boundary. Project-specific execution and source-based review remain required. See [maintenance feedback](maintenance/feedback.md) only when revising these methods.
 
+For reusable harness changes from ongoing usage, use the bundled
+[qsar-evolve](../qsar-evolve/SKILL.md). Capture private run observations separately
+from the generalized maintenance history, and preserve versioned scientific
+artifacts and independent review when adopting a repair.
+
 ## Routing examples
 
 - Use: define an LD50 regression contract; review whether ER binding sources can be pooled; design complete-data QSAR research.

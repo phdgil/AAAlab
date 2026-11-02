@@ -1,6 +1,6 @@
 # QSAR research skill pack
 
-Ten sibling skills separate coordination/shared rules from eight focused methods. Install the whole `skills/` directory; the installer discovers every skill. Twelve domain roles are supplied in [native-agents](native-agents/README.md), with an explicit installer that preserves unrelated roles. The coordinator checks actual runtime availability and uses declared generic fallbacks when custom roles are unavailable.
+Eleven sibling skills provide coordination/shared rules, eight focused research methods and a harness maintenance workflow. Install the whole `skills/` directory; the installer discovers every skill. Twelve domain roles are supplied in [native-agents](native-agents/README.md), with an explicit installer that preserves unrelated roles. The coordinator checks actual runtime availability and uses declared generic fallbacks when custom roles are unavailable.
 
 | Skill | Responsibility |
 |---|---|
@@ -14,6 +14,7 @@ Ten sibling skills separate coordination/shared rules from eight focused methods
 | qsar-evaluate | Development, sealed terminal evaluation, or release |
 | qsar-improve | Reviewed intervention or justified STOP |
 | qsar-review | Independent stage-specific source and execution review |
+| [qsar-evolve](skills/qsar-evolve/SKILL.md) | Improve reusable harness code and instructions from usage feedback |
 
 The producer reads the shared contract, its assigned skill and relevant run inputs. A distinct reviewer uses qsar-review. Modeling uses all scientifically eligible records and declared feature/model coverage; explicit diagnostics are labeled partial. Final holdout evaluation follows the development improvement loop.
 
@@ -35,6 +36,26 @@ node skills/qsar-autoresearch-harness/scripts/validate_skill_map.js --review tra
 These commands produce minimal role/skill dispatch templates. The coordinator supplies actual run inputs, ownership and review evidence and invokes the native role. Use [qsar_runtime.py](skills/qsar-autoresearch-harness/scripts/RUNTIME.md) for durable stage gates, independent execution bindings, reviewed training identity, transitive invalidation and one-time terminal reservation. Native launches remain the coordinator's responsibility; local provenance is leader-attested rather than an authentication or OS isolation boundary.
 
 Python 3.11+ and relevant pandas/scikit-learn/RDKit components are required for research execution, openpyxl for Excel, and optional representations/models need their own feasibility checks. Node is required for package routing validation. Source collection does not require an existing workbook.
+
+## Continuous improvement during use
+
+The bundled `$qsar-evolve` skill captures lessons from real runs and validates
+reusable harness changes. Invoke it with, for example:
+
+> Use $qsar-evolve to review this run's failures and my feedback, fix the supported cause, and prepare the harness for the next run.
+
+At a checkpoint, keep a short observation and evidence links in the run's private
+maintenance log. Carry reproducible issues into a separate maintenance context,
+validate the repair, then adopt a recorded harness version for the next run.
+Generalized changes accumulate in [maintenance history](skills/qsar-autoresearch/maintenance/feedback.md).
+The coordinator links this workflow without making it a scientific stage or
+editing a live run's dependencies. `$qsar-improve` handles research interventions
+from development evidence; `$qsar-evolve` maintains the reusable harness.
+
+The namespaced skill installs with the whole pack and preserves any existing
+general `evolve` skill. It runs through the agent when invoked or selected for a
+matching request; it does not install a background watcher or silently publish
+updates. Private run evidence stays outside the distributable pack.
 
 ## Scope of this revision
 
