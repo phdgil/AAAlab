@@ -1,17 +1,7 @@
-# QSAR Autoresearch Harness Trigger Tests
+# QSAR harness routing scenarios
 
-## Should Trigger
+Should invoke: build a complete QSAR pipeline from public/raw sources; continue reviewed model improvement; repair and revalidate a changed curation policy; release an existing verified QSAR package without retraining.
 
-- Build a reusable in-vivo QSAR pipeline for this workbook.
-- Train all allowed subsets and produce a final HTML summary.
-- Generalize the current endocrine QSAR harness to a new workbook family.
-- Audit leakage-sensitive columns before training.
-- If the first run is weak, design exactly one next bounded experiment.
-- Prepare a thesis-ready package with prepared tables and manifests.
+Should not invoke: explain MAE; convert an Excel sheet without modeling; summarize a paper without research execution.
 
-## Should Not Trigger
-
-- Explain QSAR basics.
-- Summarize a toxicology paper without running a pipeline.
-- Convert XLSX to CSV.
-- Make a figure or slide with no model-building workflow.
+Stage routing: missing structures -> qsar-curate; source-query coverage -> qsar-collect; fixed split design -> qsar-preprocess; supported fingerprint inventory -> qsar-features; representation/model HPO -> qsar-train; locked prediction assessment -> qsar-evaluate; development error intervention -> qsar-improve; independent audit -> qsar-review. Do not force all stages for an isolated accepted task.
