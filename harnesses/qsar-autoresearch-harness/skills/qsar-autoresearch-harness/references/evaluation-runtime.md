@@ -7,7 +7,7 @@ a producer directly does not establish scientific acceptance.
 ## Development evaluation
 
 ```sh
-python scripts/qsar_assess.py --development development.csv --folds folds.json --predictions selection_procedure_oof.csv --contract contract.json --split-manifest preprocessing_manifest.json --output-dir EMPTY_DIR
+python scripts/qsar_assess.py --development development.csv --folds folds.json --predictions selection_procedure_oof.csv --oof-manifest selection_procedure_oof_manifest.json --contract contract.json --split-manifest preprocessing_manifest.json --output-dir EMPTY_DIR
 ```
 
 The contract's `evaluation` object requires `mode: development`, `target_column`
@@ -15,6 +15,23 @@ identical to preparation/training, `required_candidates: ["selection_procedure"]
 `uncertainty: molecular_group_bootstrap`, positive integer
 `bootstrap_repetitions`, and an explicit `seed`. The prediction CSV requires
 `task_id,output_row_id,outer_fold,candidate_id,prediction`.
+
+`training.task_type` defaults to `regression`. Classification requires labels
+`0/1`, with `positive_class: 1`; `prediction` is the probability for the fitted
+`classes_ == 1` column, not an assumed column position. Classification OOF rows
+also require `task_type,positive_class,threshold`. The OOF manifest is mandatory
+for both regression and classification. It binds the prediction CSV, training inputs, fit-index registry and
+each outer model. Its `tasks[task].outer_folds` records bind `fold,threshold,model`
+and `threshold_provenance` (`source`, `scope`, `trial_id`, `fit_axis_id`), the
+selected recipe/parameters, and the frozen training-identity digest. The
+evaluator reconstructs the bound input identity and replays each outer model
+on its validation rows without fitting. Rebound hashes alone cannot authorize
+a model trained against another contract or corrected target data. Each row
+must match its own outer pipeline's saved threshold and exact training boundary.
+Different folds may have different thresholds; the final-selection threshold
+must never replace them. Thresholds are either fixed by the training contract or
+selected from its grid on inner-validation evidence. Evaluation never searches
+thresholds or ranks outer outcomes.
 
 The evaluator verifies frozen split hashes, development-only partitions, unique
 headers/IDs, exact candidate/task coverage and group-disjoint folds. It derives
@@ -24,6 +41,29 @@ undefined, not silently replaced with zero or one. Numerical overflow blocks.
 Source-level metrics and group-bootstrap intervals accompany pooled metrics.
 Intervals are conditional on saved predictions and do not include uncertainty
 from repeating training/model selection. No outer-score model ranking is performed.
+
+Classification recomputes MCC, sensitivity, specificity, balanced accuracy,
+accuracy, ROC AUC, average precision and `tp,tn,fp,fn` confusion counts. A label
+is positive when its probability is **greater than or equal to** its locked
+threshold. Probabilities outside `[0,1]`, nonfinite values and nonbinary labels
+block evaluation. Undefined metrics are `null` with a corresponding
+`<metric>_undefined_reason`: single-class targets do not acquire invented AUC/AP
+or balanced accuracy; MCC is undefined for a zero denominator. Sensitivity and
+specificity require their respective target class. Empty slices retain zero
+rows/counts and explicit undefined reasons. Classification baselines use each
+outer-training positive prevalence under the same locked thresholds.
+
+Molecular-group bootstrap samples whole groups with replacement, retaining
+row-specific frozen thresholds. `attempted_replicates` and per-metric
+`replicate_accounting` disclose valid/invalid replicates and undefined reasons;
+single-class resamples are not silently counted as valid ranking estimates.
+Fewer than two groups yields an explicit undefined interval with zero attempts.
+
+When training declares `applicability_domain`, each bound outer model's bank must
+match **only that fold's training IDs and parent identities**. Validation scores
+use its saved bank/cutoff. Row-level `domain_rows` and inside/outside/abstained
+coverage and metrics include source slices. OOD and domain-abstention rows remain
+in pooled metrics. No full-development bank substitutes for an outer-training bank.
 
 ## Improvement decision
 
@@ -59,16 +99,58 @@ python scripts/qsar_finish.py terminal --development development.csv --terminal 
 The runtime reserves terminal exposure before dispatch; a failed invocation does
 not restore unseen status. This producer checks the exact feature/training/split
 lineage, locked model artifacts, dependency versions, row/group disjointness and
-task coverage. It regenerates only the selected fixed feature recipe and calls
-`predict`; it never fits on terminal data. Full descriptor order and RDKit version
-must match. Descriptor failures/nonfinite values become missing values under the
+task coverage. Each fitted artifact must carry the exact frozen training-identity
+digest as well as its recipe digest; identical row IDs do not authorize reuse
+after training labels or other bound inputs change. It regenerates only the selected fixed feature recipe and calls
+`predict` for regression or `predict_proba` for classification; it never fits on
+terminal data. Classification checks selection, final-fit metadata and fitted
+pipeline agree on `task_type`, `positive_class` and the locked scalar `threshold`.
+It locates class `1` explicitly, validates both probability columns and records
+threshold and predicted label beside every probability. Descriptor order and RDKit
+version must match. Descriptor failures/nonfinite values become missing under the
 locked training policy, with a separate per-row/feature ledger.
+
+Fingerprint replay checks the complete saved generator recipe, count/bit method,
+atom invariants, feature order and dtype. Counts remain counts. Models with
+`feature_route: smiles` receive the complete 1-D `parent_smiles` axis through
+their locked pipeline, not a replacement numeric representation. A final domain
+bank must match the exact development training IDs and parents; replay uses its
+frozen cutoff and writes `terminal_domain.csv` without filtering OOD/abstained rows.
 
 Outputs include `terminal_predictions.csv`, `terminal_nonfinite_ledger.csv` and
 `terminal_evaluation.json`. Prior exposure remains disclosed; a newly reserved
 partition of historically used data is not independent external validation.
 Only locally produced, hash-bound joblib models are supported; untrusted model
 deserialization is not an intended input path.
+
+## External evaluation
+
+```sh
+python scripts/qsar_finish.py external --development development.csv --external sealed_external.csv --split preprocessing_manifest.json --features feature_manifest.json --final-fit final_fit.json --contract contract.json --output-dir EMPTY_DIR
+```
+
+Use the runtime's separate `terminal-evaluation` dispatch with
+`evaluation_mode: external`, after reviewed STOP and final-fit. It reserves
+external exposure once without reserving, resetting or restoring terminal
+exposure. It never substitutes for the required reserved terminal stage.
+
+The external artifact must match `split.external_cohort.artifact` and its original
+input bytes; exposure and exclusion ledgers must also verify. Declared
+`prior_exposure`/`exposure_history` and the sealed artifact binding remain visible.
+`independent_holdout: false` prevents sealing or external origin from being
+represented as untouched independent validation. Development/external canonical
+parent overlap blocks replay; atom maps and stereochemical annotations cannot
+bypass this connectivity check. Shared group IDs or scaffolds alone are not
+identity leakage. Scaffold overlap blocks only when explicitly requested by the
+frozen external exclusion policy.
+
+Outputs are separate `external_predictions.csv`, `external_nonfinite_ledger.csv`,
+`external_evaluation.json` (`mode: external`) and, when enabled,
+`external_domain.csv`. The same locked model, positive class, threshold and
+training-reference bank are replayed with no additional fits. External task
+subsets are disclosed; every supplied row must receive a prediction or evaluation
+blocks. Coverage reports original/predicted rows, zero dropped rows and
+OOD/domain-abstention source slices. External results never replace terminal results.
 
 Each producer emits a `manifest.json` handoff where applicable. Preparation and
 training supply stage-specific manifests; the coordinator wraps their exact

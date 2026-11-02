@@ -42,6 +42,30 @@ The ledger includes task, representation, algorithm, trial ID, searched/fixed pa
 9. Reconcile planned, completed, pruned, scientifically inapplicable and operationally blocked cells. On resume, reconstruct completed coverage from the required trial identities, parameters, fold-fit evidence, row-aligned predictions and model bindings before skipping work. A saved completion flag or matching record count alone cannot prove execution. Report current unique coverage separately from historical attempts and their recorded cost; an incomplete search is not a complete negative result.
 10. Hand off development models and predictions for `qsar-evaluate`, plus an independent `qsar-review` execution for this stage. Only fit a terminal candidate on all permitted development data after a reviewed improvement stop and lock instruction.
 
+## Model-path evidence
+
+- Binary classification records the positive class, probability versus raw-score
+  semantics and each outer model's frozen threshold. Bind OOF rows and thresholds
+  to their producing outer artifacts; the final-selection threshold cannot be
+  substituted when recomputing development metrics.
+- Explicit calibration cross-fits the entire preprocessing/model pipeline inside
+  the current training partition. Preserve calibration-fit identities and group
+  disjointness. Resampled synthetic vectors are not independently identified
+  molecules, and resampling must never alter evaluation membership.
+- Fitted chemical scoring learns descriptor ranges, scaffold statistics and
+  component weights only from current training rows. Fixed expert SMARTS weights
+  are inference-only; a decision tree is not an equivalent replacement for a
+  requested chemical-rule scoring method.
+- Frozen encoders bind local model/tokenizer files, pooling and sequence policy.
+  A fitted downstream classifier is not encoder fine-tuning. Missing libraries,
+  checkpoints or hardware are operational blockers, not negative model results.
+- Domain references and learned cutoffs use training parents only. Keep domain
+  scoring diagnostic unless the contract explicitly defines and validates an
+  abstention policy; do not silently discard out-of-domain evaluation rows.
+- A persisted progress record is not proof that an interrupted fit can be reused.
+  Disclose the actual restart granularity and whether resource deadlines are
+  checked at admission boundaries or enforced by process termination.
+
 ## Boundaries
 
 - Do not revise endpoint definitions, grouping policy, source inclusion or selection metrics to improve a score. Return a versioned change request to the earliest affected stage.

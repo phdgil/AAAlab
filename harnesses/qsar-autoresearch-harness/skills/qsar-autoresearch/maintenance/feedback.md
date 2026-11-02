@@ -1,5 +1,54 @@
 # QSAR method changes
 
+## 2026-11-02 - Bind execution, model lineage and publication boundaries
+
+Review of actual training histories distinguished executed fits from prepared
+jobs and requests, and reusable workflow controls from endpoint-specific
+preferences. The harness now has explicit binary classification, grouped
+cross-fitted calibration, optional numeric SMOTE and Optuna, fitted chemical-rule
+scoring, frozen local encoder heads, training-only applicability domains,
+parent/scaffold grouping, count/feature-Morgan fingerprints, separate external
+evaluation, advisory curation deltas, durable execution and localized reporting.
+Metrics, thresholds, chemical exclusions, budgets and reporting language remain
+contract choices. Frozen inference is not fine-tuning, and synthetic tests are
+not scientific performance evidence.
+
+Integration and independent review exposed several important failure modes:
+
+- Hash-consistent artifacts can still belong to another training run. Outer and
+  final models now carry the complete training-identity digest; evaluation also
+  validates recipes and independently replays bound OOF predictions.
+- Atom-map annotations are not chemical identity. Derived parent/scaffold keys
+  discard maps while preserving original source bytes.
+- An external-result reservation freezes development just as terminal exposure
+  does. Neither invalidation nor a fresh dispatch erases exposure history.
+- Custody checks and execution must resolve relative operands from the same
+  owned working directory. Model-output ownership is checked before deserialization.
+- Process completion requires owner-safe descendant teardown, not just a
+  direct-child exit. Windows Job Objects and pinned POSIX process groups share
+  the same supervision path for blocking and durable execution. A live Linux
+  test also caught venv symlink resolution selecting the wrong interpreter;
+  launch paths and interpreter/configuration bindings are now distinguished.
+- Accepted structured coverage or review fields can contain raw rows.
+  Publication omits such fields with hash/pointer receipts instead of treating
+  scientific acceptance as authorization to publish their contents.
+- Full Windows regressions exposed intermittent access denials while atomically
+  replacing checkpoints. Unique flushed temporary files and bounded retries of
+  that exact commit preserve old evidence on persistent failure; fits and
+  scientific failures are never retried or suppressed by this policy.
+
+Regression evidence includes real local process execution on Windows and Linux,
+inference-only replay and stale-model rejection, actual optional-library
+execution, and locally generated random encoder checkpoints. Slurm lifecycle
+tests use controlled scheduler responses, not a live cluster. Private transcripts,
+research data and scientific checkpoint weights are not distributed.
+
+Final verification: 825 Python tests completed successfully on Windows with
+four platform skips. All four skipped cases passed within a separate 16-test
+Linux run. `npm test` and `git diff --check` also passed. Optional calibration,
+sampling, search and random local encoder paths were exercised with installed
+dependencies; upstream deprecation warnings were not suppressed.
+
 ## 2026-11-02 - Bundle evolution for continued use
 
 The user wanted harness improvements from ongoing QSAR use to remain available

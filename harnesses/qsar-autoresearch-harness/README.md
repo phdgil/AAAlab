@@ -68,6 +68,24 @@ Executable stages are documented separately:
 - [Evaluation, improvement decisions and terminal replay](skills/qsar-autoresearch-harness/references/evaluation-runtime.md)
 - [Accepted-evidence release packaging](skills/qsar-autoresearch-harness/references/release-runtime.md)
 
+Capability choices belong in the versioned research contract. Tabular regression,
+binary classification, fitted chemical-rule scoring and frozen local SMILES
+encoders are distinct model paths; fixed expert rules and pretrained inference
+are not evidence of training. Optional checkpoints require their own provenance
+and licenses. Frozen encoding does not imply encoder fine-tuning.
+
+Preparation supports explicit parent/scaffold grouping, count and feature-Morgan
+fingerprints, and a separately preserved external cohort. A custodian-only
+grouping ledger is not a modeling input. Applicability-domain assessments preserve
+out-of-domain and abstained queries instead of silently reducing evaluation
+coverage. Curation deltas are advisory comparisons, never replacements for
+source review or exact dependency bindings.
+
+Use the runtime execution interfaces for durable local/shared-filesystem Slurm
+jobs and preserve the difference between scheduler completion, verified model
+artifacts and independent scientific acceptance. Reporting language is an
+explicit presentation choice (`en` or `ko`), not a training policy.
+
 Run `npm test` for packaging/routing/isolated-install checks and
 `npm run test:qsar-python` for executable adapter, gate and synthetic pipeline
 regressions in an environment with the documented scientific dependencies.
