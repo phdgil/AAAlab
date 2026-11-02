@@ -83,6 +83,21 @@ try {
   assert.ok(review.required_reads.some(p => p.endsWith(path.join("qsar-review", "SKILL.md"))));
   assert.throws(() => api.dispatch("unknown", false, harness), /Unknown research stage/);
 
+  assert.throws(() => api.dispatch("qsar-evolve", false, harness), /Unknown research stage/);
+  const maintenance = path.join(pack, "skills", "qsar-evolve", "SKILL.md");
+  const maintenanceBytes = fs.readFileSync(maintenance);
+  fs.unlinkSync(maintenance);
+  assert.throws(() => api.validate(harness), /Missing or outside-pack/);
+  for (const malformed of [
+    "---\nname: wrong-name\ndescription: maintenance\n---\n",
+    "---\nname: qsar-evolve\n---\ndescription: only in body\n",
+    "---\nname: qsar-evolve\ndescription: maintenance without closing delimiter\n"
+  ]) {
+    fs.writeFileSync(maintenance, malformed);
+    assert.throws(() => api.validate(harness), /Invalid skill frontmatter/);
+  }
+  fs.writeFileSync(maintenance, maintenanceBytes);
+
   const mutate = (change, pattern) => {
     const doc = JSON.parse(mapBytes);
     change(doc);
@@ -104,7 +119,10 @@ try {
 
   const verifyInstall = home => {
     const names = fs.readdirSync(path.join(pack, "skills")).filter(n => fs.existsSync(path.join(pack, "skills", n, "SKILL.md")));
-    assert.equal(names.length, 10);
+    assert.deepEqual(names.sort(), ["qsar-autoresearch", "qsar-autoresearch-harness",
+      "qsar-collect", "qsar-curate", "qsar-evaluate", "qsar-evolve", "qsar-features",
+      "qsar-improve", "qsar-preprocess", "qsar-review", "qsar-train"].sort());
+    assert.equal(fs.readFileSync(path.join(home, "skills", "evolve", "SKILL.md"), "utf8"), "generic evolve sentinel");
     for (const n of names) assert.deepEqual(fs.readFileSync(path.join(home, "skills", n, "SKILL.md")), fs.readFileSync(path.join(pack, "skills", n, "SKILL.md")));
     assert.equal(fs.readFileSync(path.join(home, "skills", "unrelated", "keep.txt"), "utf8"), "preserve");
     require(path.join(home, "skills", name, "scripts", "validate_skill_map.js")).validate(path.join(home, "skills", name));
@@ -112,6 +130,8 @@ try {
   const newHome = label => {
     const home = path.join(temp, label);
     fs.mkdirSync(path.join(home, "skills", "unrelated"), { recursive: true });
+    fs.mkdirSync(path.join(home, "skills", "evolve"), { recursive: true });
+    fs.writeFileSync(path.join(home, "skills", "evolve", "SKILL.md"), "generic evolve sentinel");
     // User homes/projects can impose ESM on every installed .js descendant.
     fs.writeFileSync(path.join(home, "package.json"), JSON.stringify({ type: "module" }));
     fs.writeFileSync(path.join(home, "skills", "unrelated", "keep.txt"), "preserve");

@@ -1,5 +1,27 @@
 # QSAR method changes
 
+## 2026-11-02 - Bundle evolution for continued use
+
+The user wanted harness improvements from ongoing QSAR use to remain available
+after installing the package. The earlier update applied a locally installed
+general evolution skill, leaving only the change record in the distributable
+pack. Add `qsar-evolve` as an eleventh sibling skill with no external skill
+dependency; the namespaced name preserves an existing general `evolve` skill.
+
+The coordinator now routes reusable harness feedback to this maintenance workflow
+and model-development interventions to `qsar-improve`. Capture observations in a
+private run log, reproduce the cause in a separate maintenance context, validate
+a bounded repair, append a generalized history entry and adopt a recorded version
+for the next run. Live dependencies, old receipts and terminal exposure remain
+under their existing versioning and review rules. The skill does not add a
+scientific stage, background watcher or automatic publication authority.
+
+Package regressions in `scripts/test-qsar-skills.js` check eleven installed skills,
+preservation of a general `evolve` skill, rejection of missing/malformed maintenance
+instructions, and rejection of maintenance as a scientific dispatch. Routing
+examples cover three intended requests and three near misses. These checks verify
+packaging and guidance; improved scientific results require later run evidence.
+
 ## 2026-10-29 ? Focused stage skills and independent handoffs
 
 Repeated feedback required full supported feature coverage, actual per-family/model HPO, endpoint-specific collection/curation, and independent validation before consuming stage outputs. Replaced the workbook-only/proposal-only shared protocol with an end-to-end contract. Added focused sibling skills and explicit agent assignments; kept toolkit counts, scientific thresholds and search budgets configurable. Separated sealed terminal evaluation from development improvement.

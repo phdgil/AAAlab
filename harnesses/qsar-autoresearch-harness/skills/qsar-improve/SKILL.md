@@ -62,3 +62,4 @@ Report the difference between pipeline completion, scientific acceptance, no jus
 - Use: "Review the remaining budget and propose the next justified development cycle or stop."
 - Do not use: "Keep tuning until the final test reaches the target score"; preserve the exposure and return a scientifically valid evaluation boundary.
 - Do not use: "Run this already accepted training configuration"; use `qsar-train`.
+- Route reusable harness-code or instruction repairs from recurring run feedback to [qsar-evolve](../qsar-evolve/SKILL.md); maintain the current scientific run's version and review gates while that maintenance is performed separately.
